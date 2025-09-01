@@ -13,13 +13,13 @@ namespace Tetris {
 
         ~Spritesheet();
 
-        SDL_Surface *getSurface() const { return spritesheet_image; }
-        int getRowCount() const { return row_count; }
-        int getColumnCount() const { return column_count; }
+        SDL_Surface *getSurface() const { return surface; }
+        int getRowCount() const { return rowCount; }
+        int getColumnCount() const { return columnCount; }
 
     private:
-        SDL_Surface *spritesheet_image;
-        int row_count;
-        int column_count;
+        SDL_Surface *surface;
+        int rowCount;
+        int columnCount;
     };
 }
