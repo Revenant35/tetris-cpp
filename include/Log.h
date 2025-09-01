@@ -19,6 +19,6 @@ namespace Tetris {
 #define TETRIS_INFO(...)     ::Tetris::Log::GetLogger()->info(__VA_ARGS__)
 #define TETRIS_WARN(...)     ::Tetris::Log::GetLogger()->warn(__VA_ARGS__)
 #define TETRIS_ERROR(...)    ::Tetris::Log::GetLogger()->error(__VA_ARGS__)
-#define TETRIS_FATAL(...)    ::Tetris::Log::GetLogger()->fatal(__VA_ARGS__)
+#define TETRIS_ASSERT(x, ...) if(!(x)) { TETRIS_ERROR(__VA_ARGS__); exit(-1); }
 
 #endif
