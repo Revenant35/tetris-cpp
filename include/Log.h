@@ -1,5 +1,4 @@
-#ifndef TETRIS_LOG_H
-#define TETRIS_LOG_H
+#pragma once
 
 #include "spdlog/logger.h"
 
@@ -20,5 +19,3 @@ namespace Tetris {
 #define TETRIS_WARN(...)     ::Tetris::Log::GetLogger()->warn(__VA_ARGS__)
 #define TETRIS_ERROR(...)    ::Tetris::Log::GetLogger()->error(__VA_ARGS__)
 #define TETRIS_ASSERT(x, ...) if(!(x)) { TETRIS_ERROR(__VA_ARGS__); exit(-1); }
-
-#endif

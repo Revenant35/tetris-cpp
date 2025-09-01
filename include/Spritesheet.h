@@ -1,5 +1,4 @@
-#ifndef TETRIS_SPRITESHEET_H
-#define TETRIS_SPRITESHEET_H
+#pragma once
 
 #include <SDL2/SDL.h>
 
@@ -24,5 +23,3 @@ namespace Tetris {
         int column_count;
     };
 }
-
-#endif
