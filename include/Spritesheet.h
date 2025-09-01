@@ -6,16 +6,22 @@
 namespace Tetris {
     class Spritesheet {
     public:
-        Spritesheet(char const *path, int row, int column);
+        Spritesheet(
+            char const *path,
+            int row_count,
+            int column_count
+        );
+
         ~Spritesheet();
 
-        void select_sprite(int x, int y);
-        void draw_selected_sprite(SDL_Surface *window_surface, SDL_Rect *position);
+        SDL_Surface *getSurface() const { return spritesheet_image; }
+        int getRowCount() const { return row_count; }
+        int getColumnCount() const { return column_count; }
 
     private:
-        SDL_Rect     m_clip;
-        SDL_Surface *m_spritesheet_image;
-
+        SDL_Surface *spritesheet_image;
+        int row_count;
+        int column_count;
     };
 }
 

@@ -2,32 +2,22 @@
 #include "Log.h"
 
 namespace Tetris {
-    Spritesheet::Spritesheet(const char *path, const int row, const int column)
-    {
-        m_spritesheet_image = SDL_LoadBMP(path);
+    Spritesheet::Spritesheet(
+        const char *path,
+        const int row_count,
+        const int column_count
+    ) {
+        this->spritesheet_image = SDL_LoadBMP(path);
+        TETRIS_ASSERT(spritesheet_image != nullptr, "Failed to load spritesheet image from path: {}", path);
 
-        if(m_spritesheet_image == nullptr) {
-            TETRIS_ERROR("Failed to load image: {}", SDL_GetError());
-            return;
-        }
+        this->row_count = row_count;
+        TETRIS_ASSERT(row_count > 0, "Row count must be greater than 0");
 
-        m_clip.w = m_spritesheet_image->w / column;
-        m_clip.h = m_spritesheet_image->h / row;
+        this->column_count = column_count;
+        TETRIS_ASSERT(column_count > 0, "Column count must be greater than 0");
     }
 
-    Spritesheet::~Spritesheet()
-    {
-        SDL_FreeSurface(m_spritesheet_image);
-    }
-
-    void Spritesheet::select_sprite(const int x, const int y)
-    {
-        m_clip.x = x * m_clip.w;
-        m_clip.y = y * m_clip.h;
-    }
-
-    void Spritesheet::draw_selected_sprite(SDL_Surface *window_surface, SDL_Rect *position)
-    {
-        SDL_BlitSurface(m_spritesheet_image, &m_clip, window_surface, position);
+    Spritesheet::~Spritesheet() {
+        SDL_FreeSurface(spritesheet_image);
     }
 }
