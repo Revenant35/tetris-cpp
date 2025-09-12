@@ -6,7 +6,6 @@ public_inc = include_directories('include')
 
 lib_sources = files(
     'src/Log.cpp',
-    'src/Spritesheet.cpp',
     'src/Renderer.cpp',
 )
 
@@ -22,6 +21,7 @@ lib_dependencies = [
     dependency('fmt', fallback : ['fmt', 'fmt_dep']),
     dependency('spdlog', fallback : ['spdlog', 'spdlog_dep'], default_options: ['std_format=disabled']),
     dependency('sdl2', version : '>=2.0.10', fallback : ['sdl2', 'sdl2_dep']),
+    dependency('sdl2_image', version : '>=2.0.15', fallback : ['sdl2_image', 'sdl2_image_dep'], default_options: ['test=false'])
 ]
 
 test_dependencies = [
