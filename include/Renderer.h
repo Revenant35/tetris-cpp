@@ -6,7 +6,8 @@
 
 namespace Tetris
 {
-    class Renderer {
+    class Renderer
+    {
     public:
         constexpr static int SCREEN_WIDTH = 640;
         constexpr static int SCREEN_HEIGHT = 480;
@@ -15,16 +16,15 @@ namespace Tetris
         Renderer();
         ~Renderer();
 
-        SDL_Texture *loadTexture(const std::string &path) const;
-        void freeTexture(SDL_Texture *texture) const;
+        SDL_Texture* loadTexture(const std::string& path) const;
+        void freeTexture(SDL_Texture& texture) const;
 
         void clear() const;
-        void drawTexture(SDL_Texture *texture, const SDL_Rect *src, const SDL_Rect *dest) const;
+        void drawTexture(SDL_Texture& texture, const SDL_Rect& src, const SDL_Rect& dest) const;
         void present() const;
 
-        bool drawFilledRect(const SDL_Rect &rect, const SDL_Color &color) const;
-        bool drawOutlinedRect(const SDL_Rect &rect, const SDL_Color &color) const;
-        bool drawPoints(const SDL_Point *points, int count, const SDL_Color &color) const;
+        bool drawFilledRect(const SDL_Rect& rect, const SDL_Color& color) const;
+        bool drawOutlinedRect(const SDL_Rect& rect, const SDL_Color& color) const;
 
     private:
         SDL_Window* window;

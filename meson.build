@@ -7,6 +7,7 @@ public_inc = include_directories('include')
 lib_sources = files(
     'src/Log.cpp',
     'src/Renderer.cpp',
+    'src/Spritesheet.cpp',
 )
 
 test_sources = files(
