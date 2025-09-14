@@ -5,17 +5,18 @@
 #include "Window.h"
 #include "SpriteAtlas.h"
 
-Renderer::Renderer(const Window &window) {
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-        printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
-        throw std::runtime_error("Failed to initialize SDL");
-    }
+Renderer::Renderer(const std::shared_ptr<Window>& window, const int width, const int height) {
+    _width = width;
+    _height = height;
+    _window = window;
 
-    renderer = SDL_CreateRenderer(window.get(), -1, SDL_RENDERER_ACCELERATED);
+    const auto renderer = SDL_CreateRenderer(window->get(), -1, SDL_RENDERER_ACCELERATED);
     if (renderer == nullptr) {
         printf("Renderer could not be created! SDL_Error: %s\n", SDL_GetError());
         throw std::runtime_error("Failed to create renderer");
     }
+
+    _renderer.reset(renderer);
 
     int imgFlags = IMG_INIT_PNG;
     if (!(IMG_Init(imgFlags) & imgFlags)) {
@@ -25,8 +26,6 @@ Renderer::Renderer(const Window &window) {
 }
 
 Renderer::~Renderer() {
-    SDL_DestroyRenderer(renderer);
-
     IMG_Quit();
     SDL_Quit();
 }
@@ -38,7 +37,7 @@ SDL_Texture *Renderer::loadTexture(const std::string &path) const {
         return nullptr;
     }
 
-    SDL_Texture *newTexture = SDL_CreateTextureFromSurface(renderer, loadedSurface);
+    SDL_Texture *newTexture = SDL_CreateTextureFromSurface(_renderer.get(), loadedSurface);
     SDL_FreeSurface(loadedSurface);
 
     if (newTexture == nullptr) {
@@ -54,11 +53,18 @@ void Renderer::freeTexture(SDL_Texture *texture) const {
 }
 
 void Renderer::clear() const {
-    SDL_RenderClear(renderer);
+    SDL_RenderClear(_renderer.get());
 }
 
 void Renderer::drawTexture(SDL_Texture *texture, const SDL_Rect *src, const SDL_Rect *dest) const {
-    SDL_RenderCopy(renderer, texture, src, dest);
+    if (dest != nullptr)
+    {
+        const auto foo = std::make_unique<SDL_Rect>(toWindowCoordinates(*dest));
+        SDL_RenderCopy(_renderer.get(), texture, src, foo.get());
+    } else
+    {
+        SDL_RenderCopy(_renderer.get(), texture, src, nullptr);
+    }
 }
 
 void Renderer::drawText(const std::string &text, SDL_Texture *fontTexture, SpriteAtlas *fontAtlas) const {
@@ -80,13 +86,13 @@ void Renderer::drawText(const std::string &text, SDL_Texture *fontTexture, Sprit
 }
 
 void Renderer::present() const {
-    SDL_RenderPresent(renderer);
+    SDL_RenderPresent(_renderer.get());
 }
 
 bool Renderer::drawFilledRect(const SDL_Rect &rect, const SDL_Color &color) const {
-    SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+    SDL_SetRenderDrawColor(_renderer.get(), color.r, color.g, color.b, color.a);
 
-    const auto success = SDL_RenderFillRect(renderer, &rect);
+    const auto success = SDL_RenderFillRect(_renderer.get(), &rect);
     if (success != 0) {
         printf("Unable to draw filled rect! SDL Error: %s\n", SDL_GetError());
         return false;
@@ -96,7 +102,7 @@ bool Renderer::drawFilledRect(const SDL_Rect &rect, const SDL_Color &color) cons
 }
 
 bool Renderer::drawOutlinedRect(const SDL_Rect &rect, const SDL_Color &color) const {
-    SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+    SDL_SetRenderDrawColor(_renderer.get(), color.r, color.g, color.b, color.a);
     SDL_Point points[5];
     points[0] = {rect.x, rect.y};
     points[1] = {rect.x + rect.w, rect.y};
@@ -104,7 +110,7 @@ bool Renderer::drawOutlinedRect(const SDL_Rect &rect, const SDL_Color &color) co
     points[3] = {rect.x, rect.y + rect.h};
     points[4] = {rect.x, rect.y};
 
-    const auto success = SDL_RenderDrawLines(renderer, points, 5);
+    const auto success = SDL_RenderDrawLines(_renderer.get(), points, 5);
     if (success != 0) {
         printf("Unable to draw outlined rect! SDL Error: %s\n", SDL_GetError());
         return false;
@@ -114,10 +120,10 @@ bool Renderer::drawOutlinedRect(const SDL_Rect &rect, const SDL_Color &color) co
 }
 
 bool Renderer::drawPoints(const SDL_Point* points, const int count, const SDL_Color &color) const {
-    SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+    SDL_SetRenderDrawColor(_renderer.get(), color.r, color.g, color.b, color.a);
 
     for (int i = 0; i < count; ++i) {
-        auto success = SDL_RenderDrawPoint(renderer, points[i].x, points[i].y);
+        auto success = SDL_RenderDrawPoint(_renderer.get(), points[i].x, points[i].y);
 
         if (!success) {
             printf("Unable to draw point! SDL Error: %s\n", SDL_GetError());
@@ -160,4 +166,22 @@ std::vector<std::string> Renderer::getTextSprites(const std::string &text) {
         }
     }
     return sprites;
+}
+
+SDL_Rect Renderer::toWindowCoordinates(const SDL_Rect &rect) const {
+    return SDL_Rect {
+        .x = rect.x * _window->getWidth() / _width,
+        .y = rect.y * _window->getHeight() / _height,
+        .w = rect.w * _window->getWidth() / _width,
+        .h = rect.h * _window->getHeight() / _height,
+    };
+}
+
+SDL_Rect Renderer::fromWindowCoordinates(const SDL_Rect &rect) const {
+    return SDL_Rect {
+        .x = rect.x * _width / _window->getWidth(),
+        .y = rect.y * _height / _window->getHeight(),
+        .w = rect.w * _width / _window->getWidth(),
+        .h = rect.h * _height / _window->getHeight(),
+    };
 }

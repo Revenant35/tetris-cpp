@@ -27,8 +27,8 @@ void drawBlocks(SpriteAtlas *atlas, SDL_Texture *texture, const Renderer &render
 }
 
 int main() {
-    const Window window("SDL2 Tetris", 256, 224);
-    const Renderer r(window);
+    const auto window = std::make_shared<Window>("SDL2 Tetris", 640, 480);
+    const Renderer r(window, 256, 224);
     bool quit = false;
     SDL_Event e;
 
@@ -41,6 +41,13 @@ int main() {
     const auto playfieldAtlas = SpriteLoader::loadSpriteAtlas("../assets/sprites/playfields_atlas.json");
     const auto playfieldTexture = r.loadTexture(playfieldAtlas->file);
 
+    const SDL_Rect foo {
+        .x = 16,
+        .y = 16,
+        .w = r.getWidth() - 32,
+        .h = r.getHeight() - 32
+    };
+
     while( !quit ) {
         while( SDL_PollEvent( &e ) != 0 )
         {
@@ -51,7 +58,7 @@ int main() {
 
             r.clear();
 
-            r.drawTexture(playfieldTexture, &playfieldAtlas->sprites.at("A_TYPE"), nullptr);
+            r.drawTexture(playfieldTexture, &playfieldAtlas->sprites.at("A_TYPE"), &foo);
 
             r.present();
         }
