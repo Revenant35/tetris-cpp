@@ -92,7 +92,8 @@ void Renderer::present() const {
 bool Renderer::drawFilledRect(const SDL_Rect &rect, const SDL_Color &color) const {
     SDL_SetRenderDrawColor(_renderer.get(), color.r, color.g, color.b, color.a);
 
-    const auto success = SDL_RenderFillRect(_renderer.get(), &rect);
+    const auto scaled = std::make_unique<SDL_Rect>(toWindowCoordinates(rect));
+    const auto success = SDL_RenderFillRect(_renderer.get(), scaled.get());
     if (success != 0) {
         printf("Unable to draw filled rect! SDL Error: %s\n", SDL_GetError());
         return false;

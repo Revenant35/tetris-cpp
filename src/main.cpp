@@ -32,20 +32,34 @@ int main() {
     bool quit = false;
     SDL_Event e;
 
-    // const auto fontAtlas = SpriteLoader::loadSpriteAtlas("../assets/sprites/font_atlas.json");
-    // const auto fontTexture = r.loadTexture(fontAtlas->file);
-    //
+    const auto fontAtlas = SpriteLoader::loadSpriteAtlas("../assets/sprites/font_atlas.json");
+    const auto fontTexture = r.loadTexture(fontAtlas->file);
+
     // const auto blockAtlas = SpriteLoader::loadSpriteAtlas("../assets/sprites/blocks_atlas.json");
     // const auto blockTexture = r.loadTexture(blockAtlas->file);
 
     const auto playfieldAtlas = SpriteLoader::loadSpriteAtlas("../assets/sprites/playfields_atlas.json");
     const auto playfieldTexture = r.loadTexture(playfieldAtlas->file);
 
-    const SDL_Rect foo {
-        .x = 16,
+    const SDL_Rect lines1 {
+        .x = 152,
         .y = 16,
-        .w = r.getWidth() - 32,
-        .h = r.getHeight() - 32
+        .w = 7,
+        .h = 7
+    };
+
+    const SDL_Rect lines2 {
+        .x = 160,
+        .y = 16,
+        .w = 7,
+        .h = 7
+    };
+
+    const SDL_Rect lines3 {
+        .x = 168,
+        .y = 16,
+        .w = 7,
+        .h = 7
     };
 
     while( !quit ) {
@@ -58,7 +72,10 @@ int main() {
 
             r.clear();
 
-            r.drawTexture(playfieldTexture, &playfieldAtlas->sprites.at("A_TYPE"), &foo);
+            r.drawTexture(playfieldTexture, &playfieldAtlas->sprites.at("A_TYPE"), nullptr);
+            r.drawTexture(fontTexture, &fontAtlas->sprites.at("0"), &lines1);
+            r.drawTexture(fontTexture, &fontAtlas->sprites.at("0"), &lines2);
+            r.drawTexture(fontTexture, &fontAtlas->sprites.at("0"), &lines3);
 
             r.present();
         }
