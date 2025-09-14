@@ -32,11 +32,14 @@ int main() {
     bool quit = false;
     SDL_Event e;
 
-    const auto fontAtlas = SpriteLoader::loadSpriteAtlas("../assets/sprites/font_atlas.json");
-    const auto fontTexture = r.loadTexture(fontAtlas->file);
+    // const auto fontAtlas = SpriteLoader::loadSpriteAtlas("../assets/sprites/font_atlas.json");
+    // const auto fontTexture = r.loadTexture(fontAtlas->file);
+    //
+    // const auto blockAtlas = SpriteLoader::loadSpriteAtlas("../assets/sprites/blocks_atlas.json");
+    // const auto blockTexture = r.loadTexture(blockAtlas->file);
 
-    const auto blockAtlas = SpriteLoader::loadSpriteAtlas("../assets/sprites/blocks_atlas.json");
-    const auto blockTexture = r.loadTexture(blockAtlas->file);
+    const auto playfieldAtlas = SpriteLoader::loadSpriteAtlas("../assets/sprites/playfields_atlas.json");
+    const auto playfieldTexture = r.loadTexture(playfieldAtlas->file);
 
     while( !quit ) {
         while( SDL_PollEvent( &e ) != 0 )
@@ -48,8 +51,7 @@ int main() {
 
             r.clear();
 
-            r.drawText("Hello, World!", fontTexture, fontAtlas);
-            drawBlocks(blockAtlas, blockTexture, r);
+            r.drawTexture(playfieldTexture, &playfieldAtlas->sprites.at("A_TYPE"), nullptr);
 
             r.present();
         }

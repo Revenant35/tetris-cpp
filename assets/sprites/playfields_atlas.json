@@ -1,0 +1,11 @@
+{
+  "file": "../assets/sprites/playfields.png",
+  "size": {
+    "w": 529,
+    "h": 275
+  },
+  "sprites": {
+    "A_TYPE": {"x": 7, "y": 6, "w": 256, "h": 224},
+    "B_TYPE": {"x": 268, "y": 6, "w": 256, "h": 224}
+  }
+}
