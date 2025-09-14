@@ -27,7 +27,7 @@ void drawBlocks(SpriteAtlas *atlas, SDL_Texture *texture, const Renderer &render
 }
 
 int main() {
-    const Window window("SDL2 Tetris");
+    const Window window("SDL2 Tetris", 256, 224);
     const Renderer r(window);
     bool quit = false;
     SDL_Event e;

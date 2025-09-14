@@ -1,7 +1,9 @@
 #include "Window.h"
 
-Window::Window(const std::string &title) {
+Window::Window(const std::string &title, const int width, const int height) {
     _title = title;
+    _width = width;
+    _height = height;
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
@@ -12,8 +14,8 @@ Window::Window(const std::string &title) {
         title.c_str(),
         SDL_WINDOWPOS_UNDEFINED,
         SDL_WINDOWPOS_UNDEFINED,
-        SCREEN_WIDTH,
-        SCREEN_HEIGHT,
+        width,
+        height,
         SDL_WINDOW_SHOWN
     );
 
