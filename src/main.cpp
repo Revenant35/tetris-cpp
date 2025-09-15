@@ -1,6 +1,22 @@
 #include "Renderer.h"
 #include "SpriteLoader.h"
 
+// TODO: Use separate viewports for screen
+//  - MainScreen (Playfied UI)
+//  - Playfield
+//  - Next/hold
+//  - Score
+//  - Block Statistics
+//  - Level
+
+// TODO: Improve text sprite rendering -- We will be using this a lot
+
+// TODO: Implement a basic event bus
+
+// TODO: Implement a game state manager (Title, Playing, Paused, GameOver, etc.)
+
+// TODO: Implement Tetris gameplay (Piece movement, rotation, line clearing, scoring, level progression)
+
 void drawBlocks(SpriteAtlas *atlas, SDL_Texture *texture, const Renderer &renderer) {
     constexpr int blockSize = 32;
     SDL_Rect dest{0, 60, blockSize, blockSize};
