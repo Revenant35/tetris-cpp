@@ -11,6 +11,7 @@ namespace Core {
         uint32_t Width = 800;
         uint32_t Height = 600;
         bool IsResizable = true;
+        bool IsFullscreen = false;
     };
 
     class Window {
@@ -20,15 +21,27 @@ namespace Core {
 
         void HandleEvent(const SDL_WindowEvent &windowEvent);
 
-        const Renderer& getRenderer() const { return *m_Renderer; }
-        uint32_t getWidth() const { return m_Width; }
-        uint32_t getHeight() const { return m_Height; }
+        const Renderer& GetRenderer() const { return *m_Renderer; }
+        const std::string& GetTitle() const { return m_Title; }
+        uint32_t GetWidth() const { return m_Width; }
+        uint32_t GetHeight() const { return m_Height; }
+        bool GetIsMinimized() const { return m_IsMinimized; }
+        bool GetHasMouseFocus() const { return m_HasMouseFocus; }
+        bool GetHasKeyboardFocus() const { return m_HasKeyboardFocus; }
+
+        void SetTitle(const std::string &value);
+        void SetWidth(uint32_t value) const;
+        void SetHeight(uint32_t value) const;
+        void SetSize(uint32_t width, uint32_t height) const;
 
     private:
         std::string m_Title;
         uint32_t m_Width;
         uint32_t m_Height;
         bool m_IsResizable;
+        bool m_IsMinimized;
+        bool m_HasMouseFocus;
+        bool m_HasKeyboardFocus;
         SDL_Window *m_Window;
         std::unique_ptr<Renderer> m_Renderer;
     };

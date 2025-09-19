@@ -76,7 +76,7 @@ namespace Core {
                 layer->OnRender();
             }
 
-            m_Window->getRenderer().present();
+            m_Window->GetRenderer().present();
         }
     }
 

@@ -11,11 +11,11 @@ AppLayer::~AppLayer() {
 }
 
 void AppLayer::OnRender() {
-    m_Window->getRenderer().clear({255, 255, 255, 255});
+    m_Window->GetRenderer().clear({255, 255, 255, 255});
 
-    SDL_Rect dest = {0, 0, (int)m_Window->getWidth() / 2, (int)m_Window->getHeight() / 2};
+    SDL_Rect dest = {0, 0, (int)m_Window->GetWidth() / 2, (int)m_Window->GetHeight() / 2};
 
-    m_Window->getRenderer().drawFilledRect(dest, {255, 0, 255, 255});
+    m_Window->GetRenderer().drawFilledRect(dest, {255, 0, 255, 255});
 }
 
 void AppLayer::OnUpdate(const float deltaTime) {
