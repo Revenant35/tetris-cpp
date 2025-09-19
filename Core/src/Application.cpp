@@ -90,6 +90,7 @@ namespace Core {
     }
 
     void Application::Stop() {
+        m_LayerStack.clear();
         m_Running = false;
     }
 

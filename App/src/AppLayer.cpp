@@ -3,14 +3,13 @@
 
 AppLayer::AppLayer(const std::shared_ptr<Core::Window> &window) : Layer(window) {
     TETRIS_INFO("AppLayer created");
-    m_FontAtlas = Core::SpriteLoader::loadSpriteAtlas("font_atlas.json");
-    m_FontTexture = window->GetRenderer().loadTexture(m_FontAtlas->file);
-
     m_BlockAtlas = Core::SpriteLoader::loadSpriteAtlas("blocks_atlas.json");
     m_BlockTexture = window->GetRenderer().loadTexture(m_BlockAtlas->file);
 
     m_PlayfieldAtlas = Core::SpriteLoader::loadSpriteAtlas("playfields_atlas.json");
     m_PlayfieldTexture = window->GetRenderer().loadTexture(m_PlayfieldAtlas->file);
+
+    m_Font = std::make_unique<Core::Font>("../../App/assets/fonts/font.ttf", 8);
 
     m_Game = Game{
         .m_Level = 1,
@@ -23,7 +22,6 @@ AppLayer::AppLayer(const std::shared_ptr<Core::Window> &window) : Layer(window) 
 }
 
 AppLayer::~AppLayer() {
-    free(m_FontAtlas);
     free(m_BlockAtlas);
     free(m_PlayfieldAtlas);
     TETRIS_INFO("AppLayer destroyed");
@@ -31,6 +29,7 @@ AppLayer::~AppLayer() {
 
 void AppLayer::OnRender() {
     m_Window->GetRenderer().drawTexture(*m_PlayfieldTexture, &m_PlayfieldAtlas->sprites.at("A_TYPE"), nullptr);
+    m_Window->GetRenderer().drawText(*m_Font, "FOOBAR", {255, 255, 255, 255}, SDL_Rect{10, 10, 50, 10});
 
     // m_Window->GetRenderer().drawText("LINES-" + std::to_string(m_Game.m_LinesCleared), m_FontTexture, m_FontAtlas);
 }

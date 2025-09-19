@@ -40,23 +40,9 @@ namespace Core {
         SDL_RenderCopy(m_Renderer, texture.GetSDLTexture(), src, dest);
     }
 
-    // TODO: Use TTF here.
-    void Renderer::drawText(const std::string &text, const Texture& fontTexture, SpriteAtlas *fontAtlas) const {
-        constexpr int fontSize = 40;
-        SDL_Rect spriteDest {
-            .x = 10,
-            .y = 10,
-            .w = fontSize,
-            .h = fontSize
-        };
-
-        const auto sprites = getTextSprites(text);
-
-        for (auto sprite : sprites) {
-            constexpr int textSpacing = 8;
-            drawTexture(fontTexture, &fontAtlas->sprites[sprite], &spriteDest);
-            spriteDest.x += fontSize + textSpacing;
-        }
+    void Renderer::drawText(const Font &font, const std::string &text, const SDL_Color &color, const SDL_Rect &dest) const {
+        const Texture textTexture(m_Renderer, font.GetTTFFont(), text, color);
+        drawTexture(textTexture, nullptr, &dest);
     }
 
     void Renderer::present() const {
@@ -105,40 +91,5 @@ namespace Core {
             }
         }
         return true;
-    }
-
-    std::vector<std::string> Renderer::getTextSprites(const std::string &text) {
-        std::vector<std::string> sprites;
-        sprites.reserve(text.length());
-        for (const char c : text) {
-            if (isdigit(c)) {
-                sprites.push_back(std::string(1, c));
-                continue;
-            }
-
-            if (islower(c)) {
-                sprites.push_back(std::string(1, static_cast<char>(std::toupper(c))));
-                continue;
-            }
-
-            if (isupper(c)) {
-                sprites.push_back(std::string(1, c));
-                continue;
-            }
-
-
-            switch (c) {
-                case '-': sprites.push_back("DASH"); break;
-                case ',': sprites.push_back("COMMA"); break;
-                case '\'': sprites.push_back("APOSTROPHE"); break;
-                case '!': sprites.push_back("EXCLAMATION"); break;
-                case ' ': sprites.push_back("SPACE"); break;
-                default: {
-                    sprites.push_back("SPACE");
-                    break;
-                }
-            }
-        }
-        return sprites;
     }
 }

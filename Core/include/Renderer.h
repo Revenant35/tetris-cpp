@@ -23,7 +23,7 @@ namespace Core {
 
         void drawTexture(const Texture& texture, const SDL_Rect *src, const SDL_Rect *dest) const;
 
-        void drawText(const std::string &text, const Texture& fontTexture, SpriteAtlas *fontAtlas) const;
+        void drawText(const Font &font, const std::string &text, const SDL_Color &color, const SDL_Rect &dest) const;
 
         void present() const;
 
@@ -36,7 +36,5 @@ namespace Core {
         SDL_Renderer *m_Renderer;
 
         SDL_Color m_defaultClearColor{0, 0, 0, 0};
-
-        static std::vector<std::string> getTextSprites(const std::string &text);
     };
 }
