@@ -2,8 +2,10 @@
 
 #include "Renderer.h"
 
+#include <SDL_ttf.h>
+
 #include "Log.h"
-#include "SDL_image.h"
+#include "Texture.h"
 
 namespace Core {
     Renderer::Renderer(SDL_Window *window) {
@@ -20,28 +22,8 @@ namespace Core {
         SDL_DestroyRenderer(m_Renderer);
     }
 
-    SDL_Texture *Renderer::loadTexture(const std::string &path) const {
-        SDL_Surface *loadedSurface = IMG_Load(path.c_str());
-        if (loadedSurface == nullptr) {
-            TETRIS_ERROR("Unable to load image %s! SDL Error: %s\n", path.c_str(), SDL_GetError());
-            return nullptr;
-        }
-
-        SDL_Texture *newTexture = SDL_CreateTextureFromSurface(m_Renderer, loadedSurface);
-        SDL_FreeSurface(loadedSurface);
-
-        if (newTexture == nullptr) {
-            TETRIS_ERROR("Unable to create texture from %s! SDL Error: %s\n", path.c_str(), SDL_GetError());
-            return nullptr;
-        }
-
-        // TODO: Return a Texture class.
-        return newTexture;
-    }
-
-    void Renderer::freeTexture(SDL_Texture *texture) const {
-        // TODO: Move this to a Texture class.
-        SDL_DestroyTexture(texture);
+    std::unique_ptr<Texture> Renderer::loadTexture(const std::string &path) const {
+        return std::make_unique<Texture>(m_Renderer, path);
     }
 
     void Renderer::clear(const SDL_Color &color) const {
@@ -54,13 +36,12 @@ namespace Core {
         }
     }
 
-    // TODO: Accept a Texture class here.
-    void Renderer::drawTexture(SDL_Texture *texture, const SDL_Rect *src, const SDL_Rect *dest) const {
-        SDL_RenderCopy(m_Renderer, texture, src, dest);
+    void Renderer::drawTexture(const Texture &texture, const SDL_Rect *src, const SDL_Rect *dest) const {
+        SDL_RenderCopy(m_Renderer, texture.GetSDLTexture(), src, dest);
     }
 
     // TODO: Use TTF here.
-    void Renderer::drawText(const std::string &text, SDL_Texture *fontTexture, SpriteAtlas *fontAtlas) const {
+    void Renderer::drawText(const std::string &text, const Texture& fontTexture, SpriteAtlas *fontAtlas) const {
         constexpr int fontSize = 40;
         SDL_Rect spriteDest {
             .x = 10,

@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "SpriteLoader.h"
+#include "Texture.h"
 
 namespace Core {
     class Renderer {
@@ -15,15 +16,14 @@ namespace Core {
         Renderer(SDL_Window *window);
         ~Renderer();
 
-        SDL_Texture *loadTexture(const std::string &path) const;
-        void freeTexture(SDL_Texture *texture) const;
+        std::unique_ptr<Texture> loadTexture(const std::string &path) const;
 
         void clear(const SDL_Color &color) const;
         void clear() const { clear(m_defaultClearColor); }
 
-        void drawTexture(SDL_Texture *texture, const SDL_Rect *src, const SDL_Rect *dest) const;
+        void drawTexture(const Texture& texture, const SDL_Rect *src, const SDL_Rect *dest) const;
 
-        void drawText(const std::string &text, SDL_Texture *fontTexture, SpriteAtlas *fontAtlas) const;
+        void drawText(const std::string &text, const Texture& fontTexture, SpriteAtlas *fontAtlas) const;
 
         void present() const;
 

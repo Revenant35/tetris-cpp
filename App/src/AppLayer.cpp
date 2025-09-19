@@ -23,10 +23,6 @@ AppLayer::AppLayer(const std::shared_ptr<Core::Window> &window) : Layer(window) 
 }
 
 AppLayer::~AppLayer() {
-    m_Window->GetRenderer().freeTexture(m_FontTexture);
-    m_Window->GetRenderer().freeTexture(m_BlockTexture);
-    m_Window->GetRenderer().freeTexture(m_PlayfieldTexture);
-
     free(m_FontAtlas);
     free(m_BlockAtlas);
     free(m_PlayfieldAtlas);
@@ -34,7 +30,7 @@ AppLayer::~AppLayer() {
 }
 
 void AppLayer::OnRender() {
-    m_Window->GetRenderer().drawTexture(m_PlayfieldTexture, &m_PlayfieldAtlas->sprites.at("A_TYPE"), nullptr);
+    m_Window->GetRenderer().drawTexture(*m_PlayfieldTexture, &m_PlayfieldAtlas->sprites.at("A_TYPE"), nullptr);
 
     // m_Window->GetRenderer().drawText("LINES-" + std::to_string(m_Game.m_LinesCleared), m_FontTexture, m_FontAtlas);
 }

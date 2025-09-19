@@ -14,9 +14,9 @@ private:
     Core::SpriteAtlas* m_BlockAtlas;
     Core::SpriteAtlas* m_PlayfieldAtlas;
 
-    SDL_Texture* m_FontTexture;
-    SDL_Texture* m_BlockTexture;
-    SDL_Texture* m_PlayfieldTexture;
+    std::unique_ptr<Core::Texture> m_FontTexture;
+    std::unique_ptr<Core::Texture> m_BlockTexture;
+    std::unique_ptr<Core::Texture> m_PlayfieldTexture;
 
     Game m_Game;
 };
