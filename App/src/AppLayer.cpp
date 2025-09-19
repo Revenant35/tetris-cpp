@@ -29,7 +29,27 @@ AppLayer::~AppLayer() {
 
 void AppLayer::OnRender() {
     m_Window->GetRenderer().drawTexture(*m_PlayfieldTexture, &m_PlayfieldAtlas->sprites.at("A_TYPE"), nullptr);
-    m_Window->GetRenderer().drawText(*m_Font, "FOOBAR", {255, 255, 255, 255}, SDL_Rect{10, 10, 50, 10});
+
+    SDL_Rect playfieldTypeRect {
+        (int)(m_Window->GetWidth() * 0.09),
+        (int)(m_Window->GetHeight() * 0.1),
+        (int)(m_Window->GetWidth() * 0.195),
+        (int)(m_Window->GetHeight() * 0.05),
+    };
+
+    m_Window->GetRenderer().drawFilledRect(playfieldTypeRect, {0, 0, 0, 255});
+    m_Window->GetRenderer().drawText(*m_Font, "A TYPE", {255, 255, 255, 255}, playfieldTypeRect);
+
+
+    SDL_Rect linesRect {
+        (int)(m_Window->GetWidth() * 0.37),
+        (int)(m_Window->GetHeight() * 0.065),
+        (int)(m_Window->GetWidth() * 0.325),
+        (int)(m_Window->GetHeight() * 0.05),
+    };
+
+    m_Window->GetRenderer().drawFilledRect(linesRect, {0, 0, 0, 255});
+    m_Window->GetRenderer().drawText(*m_Font, "LINES - 140", {255, 255, 255, 255}, linesRect);
 
     // m_Window->GetRenderer().drawText("LINES-" + std::to_string(m_Game.m_LinesCleared), m_FontTexture, m_FontAtlas);
 }

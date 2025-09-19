@@ -27,7 +27,7 @@ namespace Core {
 
         void present() const;
 
-        bool drawFilledRect(const SDL_Rect &rect, const SDL_Color &color) const;
+        void drawFilledRect(const SDL_Rect &rect, const SDL_Color &color) const;
         bool drawOutlinedRect(const SDL_Rect &rect, const SDL_Color &color) const;
         bool drawPoints(const SDL_Point *points, int count, const SDL_Color &color) const;
 
