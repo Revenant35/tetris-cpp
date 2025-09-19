@@ -72,6 +72,8 @@ namespace Core {
                 layer->OnUpdate(timestep);
             }
 
+            m_Window->GetRenderer().clear();
+
             for (const std::unique_ptr<Layer>& layer : m_LayerStack) {
                 layer->OnRender();
             }
