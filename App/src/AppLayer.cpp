@@ -1,9 +1,16 @@
 #include "AppLayer.h"
-
 #include "Log.h"
 
 AppLayer::AppLayer(const std::shared_ptr<Core::Window> &window) : Layer(window) {
     TETRIS_INFO("AppLayer created");
+    m_FontAtlas = Core::SpriteLoader::loadSpriteAtlas("font_atlas.json");
+    m_FontTexture = window->GetRenderer().loadTexture(m_FontAtlas->file);
+
+    m_BlockAtlas = Core::SpriteLoader::loadSpriteAtlas("blocks_atlas.json");
+    m_BlockTexture = window->GetRenderer().loadTexture(m_BlockAtlas->file);
+
+    m_PlayfieldAtlas = Core::SpriteLoader::loadSpriteAtlas("playfields_atlas.json");
+    m_PlayfieldTexture = window->GetRenderer().loadTexture(m_PlayfieldAtlas->file);
 }
 
 AppLayer::~AppLayer() {
@@ -11,11 +18,7 @@ AppLayer::~AppLayer() {
 }
 
 void AppLayer::OnRender() {
-    m_Window->GetRenderer().clear({255, 255, 255, 255});
-
-    SDL_Rect dest = {0, 0, (int)m_Window->GetWidth() / 2, (int)m_Window->GetHeight() / 2};
-
-    m_Window->GetRenderer().drawFilledRect(dest, {255, 0, 255, 255});
+    m_Window->GetRenderer().drawTexture(m_PlayfieldTexture, &m_PlayfieldAtlas->sprites.at("A_TYPE"), nullptr);
 }
 
 void AppLayer::OnUpdate(const float deltaTime) {
