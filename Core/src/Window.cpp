@@ -17,7 +17,7 @@ namespace Core {
             flags |= SDL_WINDOW_RESIZABLE;
         }
 
-        m_Window = SDL_CreateWindow(
+        SDL_Window* window = SDL_CreateWindow(
             m_Title.c_str(),
             SDL_WINDOWPOS_UNDEFINED,
             SDL_WINDOWPOS_UNDEFINED,
@@ -26,19 +26,61 @@ namespace Core {
             flags
         );
 
-        if (m_Window == nullptr) {
+        if (window == nullptr) {
             TETRIS_ERROR("Window could not be created! SDL_Error: %s\n", SDL_GetError());
             throw std::runtime_error("Failed to create window");
         }
+        
+        m_Window.reset(window);
 
-        SDL_SetWindowMinimumSize(m_Window, specification.MinWidth, specification.MinHeight);
-        SDL_SetWindowMaximumSize(m_Window, specification.MaxWidth, specification.MaxHeight);
+        SDL_SetWindowMinimumSize(window, specification.MinWidth, specification.MinHeight);
+        SDL_SetWindowMaximumSize(window, specification.MaxWidth, specification.MaxHeight);
 
-        m_Renderer = std::make_unique<Renderer>(m_Window);
+        m_Renderer = std::make_unique<Renderer>(window);
     }
 
-    Window::~Window() {
-        SDL_DestroyWindow(m_Window);
+    Window::Window(Window&& other) noexcept
+        : m_Title(std::move(other.m_Title)),
+          m_Width(other.m_Width),
+          m_Height(other.m_Height),
+          m_IsResizable(other.m_IsResizable),
+          m_IsMinimized(other.m_IsMinimized),
+          m_HasMouseFocus(other.m_HasMouseFocus),
+          m_HasKeyboardFocus(other.m_HasKeyboardFocus),
+          m_Window(std::move(other.m_Window)),
+          m_Renderer(std::move(other.m_Renderer)) {
+        // Reset other's primitive values to defaults
+        other.m_Width = 0;
+        other.m_Height = 0;
+        other.m_IsResizable = false;
+        other.m_IsMinimized = false;
+        other.m_HasMouseFocus = false;
+        other.m_HasKeyboardFocus = false;
+    }
+
+    Window& Window::operator=(Window&& other) noexcept {
+        if (this == &other) {
+            return *this;
+        }
+
+        m_Title = std::move(other.m_Title);
+        m_Width = other.m_Width;
+        m_Height = other.m_Height;
+        m_IsResizable = other.m_IsResizable;
+        m_IsMinimized = other.m_IsMinimized;
+        m_HasMouseFocus = other.m_HasMouseFocus;
+        m_HasKeyboardFocus = other.m_HasKeyboardFocus;
+        m_Window = std::move(other.m_Window);
+        m_Renderer = std::move(other.m_Renderer);
+
+        // Reset other's primitive values to defaults
+        other.m_Width = 0;
+        other.m_Height = 0;
+        other.m_IsResizable = false;
+        other.m_IsMinimized = false;
+        other.m_HasMouseFocus = false;
+        other.m_HasKeyboardFocus = false;
+        return *this;
     }
 
     void Window::HandleEvent(const SDL_WindowEvent &windowEvent) {
@@ -73,18 +115,18 @@ namespace Core {
 
     void Window::SetTitle(const std::string &value) {
         m_Title = value;
-        SDL_SetWindowTitle(m_Window, m_Title.c_str());
+        SDL_SetWindowTitle(m_Window.get(), m_Title.c_str());
     }
 
     void Window::SetWidth(const uint32_t value) const {
-        SDL_SetWindowSize(m_Window, static_cast<int>(value), static_cast<int>(m_Height));
+        SDL_SetWindowSize(m_Window.get(), static_cast<int>(value), static_cast<int>(m_Height));
     }
 
     void Window::SetHeight(const uint32_t value) const {
-        SDL_SetWindowSize(m_Window, static_cast<int>(m_Width), static_cast<int>(value));
+        SDL_SetWindowSize(m_Window.get(), static_cast<int>(m_Width), static_cast<int>(value));
     }
 
     void Window::SetSize(const uint32_t width, const uint32_t height) const {
-        SDL_SetWindowSize(m_Window, static_cast<int>(width), static_cast<int>(height));
+        SDL_SetWindowSize(m_Window.get(), static_cast<int>(width), static_cast<int>(height));
     }
 }
