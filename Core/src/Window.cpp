@@ -31,6 +31,9 @@ namespace Core {
             throw std::runtime_error("Failed to create window");
         }
 
+        SDL_SetWindowMinimumSize(m_Window, specification.MinWidth, specification.MinHeight);
+        SDL_SetWindowMaximumSize(m_Window, specification.MaxWidth, specification.MaxHeight);
+
         m_Renderer = std::make_unique<Renderer>(m_Window);
     }
 

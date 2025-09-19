@@ -10,6 +10,10 @@ namespace Core {
         std::string Title;
         uint32_t Width = 800;
         uint32_t Height = 600;
+        uint32_t MinWidth = 320;
+        uint32_t MinHeight = 240;
+        uint32_t MaxWidth = 1920;
+        uint32_t MaxHeight = 1080;
         bool IsResizable = true;
         bool IsFullscreen = false;
     };
