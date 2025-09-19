@@ -14,7 +14,14 @@ AppLayer::AppLayer(const std::shared_ptr<Core::Window> &window) : Layer(window) 
 }
 
 AppLayer::~AppLayer() {
+    m_Window->GetRenderer().freeTexture(m_FontTexture);
+    m_Window->GetRenderer().freeTexture(m_BlockTexture);
+    m_Window->GetRenderer().freeTexture(m_PlayfieldTexture);
 
+    free(m_FontAtlas);
+    free(m_BlockAtlas);
+    free(m_PlayfieldAtlas);
+    TETRIS_INFO("AppLayer destroyed");
 }
 
 void AppLayer::OnRender() {
