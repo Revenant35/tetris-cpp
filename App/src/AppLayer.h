@@ -1,4 +1,5 @@
 #pragma once
+#include "Game.h"
 #include "Layer.h"
 
 class AppLayer final : public Core::Layer {
@@ -16,4 +17,6 @@ private:
     SDL_Texture* m_FontTexture;
     SDL_Texture* m_BlockTexture;
     SDL_Texture* m_PlayfieldTexture;
+
+    Game m_Game;
 };
