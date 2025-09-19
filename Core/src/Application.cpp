@@ -1,7 +1,7 @@
-#include "Application.h"
-
 #include <SDL.h>
+#include <SDL_ttf.h>
 
+#include "Application.h"
 #include "Log.h"
 
 namespace Core {
@@ -23,6 +23,12 @@ namespace Core {
             throw std::runtime_error("Failed to initialize SDL_image");
         }
 
+        if( TTF_Init() != 0 )
+        {
+            TETRIS_ERROR("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
+            throw std::runtime_error("Failed to initialize SDL_ttf");
+        }
+
         Log::Init();
 
         if (m_Specification.WindowSpec.Title.empty()) {
@@ -34,6 +40,7 @@ namespace Core {
 
     Application::~Application() {
         IMG_Quit();
+        TTF_Quit();
         SDL_QuitSubSystem(SDL_INIT_VIDEO);
 
         s_Instance = nullptr;
