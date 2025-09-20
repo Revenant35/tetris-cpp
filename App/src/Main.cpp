@@ -1,5 +1,6 @@
 #include "Application.h"
 #include "AppLayer.h"
+#include "Game.h"
 #include "MenuLayer.h"
 
 int main() {
@@ -11,6 +12,7 @@ int main() {
     Game game;
 
     Core::Application application(appspec);
+    application.RegisterFont("font", "../../App/assets/fonts/font.ttf");
     application.PushLayer<AppLayer>();
     application.PushLayer<MenuLayer>();
     application.Run();

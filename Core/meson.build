@@ -3,6 +3,7 @@ core_inc = include_directories('include')
 core_sources = files(
     'src/Application.cpp',
     'src/Font.cpp',
+    'src/FontRegistry.cpp',
     'src/Log.cpp',
     'src/Layer.cpp',
     'src/Renderer.cpp',

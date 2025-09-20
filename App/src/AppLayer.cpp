@@ -1,4 +1,7 @@
 #include "AppLayer.h"
+
+#include "Application.h"
+#include "FontRegistry.h"
 #include "Log.h"
 
 AppLayer::AppLayer(const std::shared_ptr<Core::Window> &window) : Layer(window) {
@@ -9,7 +12,7 @@ AppLayer::AppLayer(const std::shared_ptr<Core::Window> &window) : Layer(window) 
     m_PlayfieldAtlas = Core::SpriteLoader::loadSpriteAtlas("playfields_atlas.json");
     m_PlayfieldTexture = window->GetRenderer().loadTexture(m_PlayfieldAtlas->file);
 
-    m_Font = std::make_unique<Core::Font>("../../App/assets/fonts/font.ttf", 8);
+    m_Font = Core::Application::Get().GetFontRegistry().Find("font");
 }
 
 AppLayer::~AppLayer() {
@@ -19,30 +22,32 @@ AppLayer::~AppLayer() {
 }
 
 void AppLayer::OnRender() {
-    m_Window->GetRenderer().drawTexture(*m_PlayfieldTexture, &m_PlayfieldAtlas->sprites.at("A_TYPE"), nullptr);
+    if (const auto font = m_Font.lock()) {
+        m_Window->GetRenderer().drawTexture(*m_PlayfieldTexture, &m_PlayfieldAtlas->sprites.at("A_TYPE"), nullptr);
 
-    SDL_Rect playfieldTypeRect {
-        (int)(m_Window->GetWidth() * 0.09),
-        (int)(m_Window->GetHeight() * 0.1),
-        (int)(m_Window->GetWidth() * 0.195),
-        (int)(m_Window->GetHeight() * 0.05),
-    };
+        SDL_Rect playfieldTypeRect {
+            (int)(m_Window->GetWidth() * 0.09),
+            (int)(m_Window->GetHeight() * 0.1),
+            (int)(m_Window->GetWidth() * 0.195),
+            (int)(m_Window->GetHeight() * 0.05),
+        };
 
-    m_Window->GetRenderer().drawFilledRect(playfieldTypeRect, {0, 0, 0, 255});
-    m_Window->GetRenderer().drawText(*m_Font, "A TYPE", {255, 255, 255, 255}, playfieldTypeRect);
+        m_Window->GetRenderer().drawFilledRect(playfieldTypeRect, {0, 0, 0, 255});
+        m_Window->GetRenderer().drawText(*font, "A TYPE", {255, 255, 255, 255}, playfieldTypeRect);
 
 
-    SDL_Rect linesRect {
-        (int)(m_Window->GetWidth() * 0.37),
-        (int)(m_Window->GetHeight() * 0.065),
-        (int)(m_Window->GetWidth() * 0.325),
-        (int)(m_Window->GetHeight() * 0.05),
-    };
+        SDL_Rect linesRect {
+            (int)(m_Window->GetWidth() * 0.37),
+            (int)(m_Window->GetHeight() * 0.065),
+            (int)(m_Window->GetWidth() * 0.325),
+            (int)(m_Window->GetHeight() * 0.05),
+        };
 
-    m_Window->GetRenderer().drawFilledRect(linesRect, {0, 0, 0, 255});
-    m_Window->GetRenderer().drawText(*m_Font, "LINES - 140", {255, 255, 255, 255}, linesRect);
+        m_Window->GetRenderer().drawFilledRect(linesRect, {0, 0, 0, 255});
+        m_Window->GetRenderer().drawText(*font, "LINES - 140", {255, 255, 255, 255}, linesRect);
 
-    // m_Window->GetRenderer().drawText("LINES-" + std::to_string(m_Game.m_LinesCleared), m_FontTexture, m_FontAtlas);
+        // m_Window->GetRenderer().drawText("LINES-" + std::to_string(m_Game.m_LinesCleared), m_FontTexture, m_FontAtlas);
+    }
 }
 
 void AppLayer::OnUpdate(const float deltaTime) {

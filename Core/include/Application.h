@@ -4,6 +4,7 @@
 #include <memory>
 #include <vector>
 
+#include "FontRegistry.h"
 #include "Layer.h"
 #include "Timer.h"
 #include "Window.h"
@@ -30,6 +31,9 @@ namespace Core {
             m_LayerStack.push_back(std::make_unique<TLayer>(m_Window));
         }
 
+        void RegisterFont(const std::string &key, const std::string &path);
+        const FontRegistry& GetFontRegistry() const { return m_FontRegistry; }
+
         static Application& Get();
         static float GetTime();
     private:
@@ -39,5 +43,6 @@ namespace Core {
         std::vector<std::unique_ptr<Layer>> m_LayerStack;
         Timer m_FPSTimer;
         uint64_t m_FrameCount = 0;
+        FontRegistry m_FontRegistry;
     };
 }

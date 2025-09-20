@@ -2,14 +2,14 @@
 #include <SDL_ttf.h>
 
 #include "Application.h"
+#include "FontRegistry.h"
 #include "Log.h"
 
 namespace Core {
     static Application* s_Instance = nullptr;
 
     Application::Application(const ApplicationSpecification &specification)
-        :m_Specification(specification)
-    {
+        : m_Specification(specification), m_FontRegistry(8) {
         s_Instance = this;
 
         if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -23,8 +23,7 @@ namespace Core {
             throw std::runtime_error("Failed to initialize SDL_image");
         }
 
-        if( TTF_Init() != 0 )
-        {
+        if (TTF_Init() != 0) {
             TETRIS_ERROR("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
             throw std::runtime_error("Failed to initialize SDL_ttf");
         }
@@ -39,6 +38,7 @@ namespace Core {
     }
 
     Application::~Application() {
+        m_FontRegistry.Clear();
         IMG_Quit();
         TTF_Quit();
         SDL_QuitSubSystem(SDL_INIT_VIDEO);
@@ -96,6 +96,10 @@ namespace Core {
         m_FPSTimer.Stop();
         m_LayerStack.clear();
         m_Running = false;
+    }
+
+    void Application::RegisterFont(const std::string &key, const std::string &path) {
+        m_FontRegistry.Register(path, key);
     }
 
     Application& Application::Get() {

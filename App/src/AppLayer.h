@@ -1,5 +1,4 @@
 #pragma once
-#include "Game.h"
 #include "Layer.h"
 
 class AppLayer final : public Core::Layer {
@@ -16,5 +15,5 @@ private:
     std::unique_ptr<Core::Texture> m_BlockTexture;
     std::unique_ptr<Core::Texture> m_PlayfieldTexture;
 
-    std::unique_ptr<Core::Font> m_Font;
+    std::weak_ptr<Core::Font> m_Font;
 };
