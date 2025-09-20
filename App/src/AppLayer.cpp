@@ -10,15 +10,6 @@ AppLayer::AppLayer(const std::shared_ptr<Core::Window> &window) : Layer(window) 
     m_PlayfieldTexture = window->GetRenderer().loadTexture(m_PlayfieldAtlas->file);
 
     m_Font = std::make_unique<Core::Font>("../../App/assets/fonts/font.ttf", 8);
-
-    m_Game = Game{
-        .m_Level = 1,
-        .m_Score = 0,
-        .m_LinesCleared = 0,
-        .m_Playfield = Playfield{
-            .cells = std::vector<PlayfieldCell>(200) // 10x20 playfield
-        }
-    };
 }
 
 AppLayer::~AppLayer() {

@@ -1,5 +1,6 @@
 app_sources = files(
     'src/AppLayer.cpp',
+    'src/Game.cpp',
     'src/Main.cpp',
 )
 

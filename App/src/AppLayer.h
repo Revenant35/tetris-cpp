@@ -17,6 +17,4 @@ private:
     std::unique_ptr<Core::Texture> m_PlayfieldTexture;
 
     std::unique_ptr<Core::Font> m_Font;
-
-    Game m_Game;
 };

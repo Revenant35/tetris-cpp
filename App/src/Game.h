@@ -2,9 +2,22 @@
 
 #include "Playfield.h"
 
-struct Game {
-    uint16_t m_Level;
-    uint32_t m_Score;
-    uint32_t m_LinesCleared;
-    Playfield m_Playfield;
+class Game {
+    struct GameData {
+        uint16_t Level;
+        uint32_t Score;
+        uint32_t LinesCleared;
+        Playfield Playfield;
+        bool IsPaused;
+    };
+public:
+    Game();
+    ~Game();
+
+    GameData &GetData() { return m_Data; }
+    const GameData &GetData() const { return m_Data; }
+
+    static Game& Get();
+private:
+    GameData m_Data;
 };
