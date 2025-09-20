@@ -67,9 +67,8 @@ namespace Core {
 
                 // TODO: Define Custom Events
                 // TODO: Map SDL Events to Custom Events
-                // TODO: Reverse iterate the layers here. Imagine pressing a button.
-                for (const std::unique_ptr<Layer>& layer : m_LayerStack) {
-                    // layer->OnEvent(event);
+                for (int i = static_cast<int>(m_LayerStack.size()) - 1; i >= 0; i--) {
+                    m_LayerStack[i]->OnEvent(event);
                 }
             }
 
