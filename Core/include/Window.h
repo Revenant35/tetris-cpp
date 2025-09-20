@@ -2,7 +2,6 @@
 
 #include <string>
 #include <SDL.h>
-#include <memory>
 
 #include "Renderer.h"
 
@@ -22,12 +21,7 @@ namespace Core {
     class Window {
     public:
         Window(const WindowSpecification &specification);
-        
-        Window(const Window&) = delete;
-        Window& operator=(const Window&) = delete;
-        
-        Window(Window&& other) noexcept;
-        Window& operator=(Window&& other) noexcept;
+        ~Window();
 
         void HandleEvent(const SDL_WindowEvent &windowEvent);
 
@@ -45,14 +39,6 @@ namespace Core {
         void SetSize(uint32_t width, uint32_t height) const;
 
     private:
-        struct WindowDeleter {
-            void operator()(SDL_Window* window) const {
-                if (window) {
-                    SDL_DestroyWindow(window);
-                }
-            }
-        };
-        
         std::string m_Title;
         uint32_t m_Width;
         uint32_t m_Height;
@@ -60,7 +46,7 @@ namespace Core {
         bool m_IsMinimized;
         bool m_HasMouseFocus;
         bool m_HasKeyboardFocus;
-        std::unique_ptr<SDL_Window, WindowDeleter> m_Window;
+        SDL_Window *m_Window;
         std::unique_ptr<Renderer> m_Renderer;
     };
 }
