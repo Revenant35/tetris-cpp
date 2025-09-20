@@ -1,7 +1,7 @@
-#include "Texture.h"
 #include <SDL_ttf.h>
+#include "Texture.h"
 #include "Log.h"
-#include <SDL_image.h>
+#include "SDL_image.h"
 
 Core::Texture::Texture(SDL_Renderer *renderer, const std::string &path) {
     SDL_Surface *loadedSurface = IMG_Load(path.c_str());
@@ -12,16 +12,13 @@ Core::Texture::Texture(SDL_Renderer *renderer, const std::string &path) {
 
     m_Width = loadedSurface->w;
     m_Height = loadedSurface->h;
-
-    SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, loadedSurface);
+    m_Texture = SDL_CreateTextureFromSurface(renderer, loadedSurface);
     SDL_FreeSurface(loadedSurface);
 
-    if (texture == nullptr) {
+    if (m_Texture == nullptr) {
         TETRIS_ERROR("Unable to create texture from %s! SDL Error: %s\n", path.c_str(), SDL_GetError());
         throw std::runtime_error("Failed to create texture");
     }
-
-    m_Texture.reset(texture);
 }
 
 Core::Texture::Texture(SDL_Renderer *renderer, TTF_Font *font, const std::string &textureText, SDL_Color textColor) {
@@ -33,34 +30,16 @@ Core::Texture::Texture(SDL_Renderer *renderer, TTF_Font *font, const std::string
 
     m_Width = textSurface->w;
     m_Height = textSurface->h;
+    m_Texture = SDL_CreateTextureFromSurface(renderer, textSurface);
 
-    SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, textSurface);
-    SDL_FreeSurface(textSurface);
-
-    if (texture == nullptr) {
+    if (m_Texture == nullptr) {
         TETRIS_ERROR("Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
         throw std::runtime_error("Failed to create texture");
     }
 
-    m_Texture.reset(texture);
+    SDL_FreeSurface(textSurface);
 }
 
-Core::Texture::Texture(Texture &&other) noexcept
-    : m_Texture(std::move(other.m_Texture)),
-      m_Width(other.m_Width),
-      m_Height(other.m_Height) {
-    other.m_Width = 0;
-    other.m_Height = 0;
-}
-
-Core::Texture &Core::Texture::operator=(Texture &&other) noexcept {
-    if (this != &other) {
-        m_Texture = std::move(other.m_Texture);
-        m_Width = other.m_Width;
-        m_Height = other.m_Height;
-
-        other.m_Width = 0;
-        other.m_Height = 0;
-    }
-    return *this;
+Core::Texture::~Texture() {
+    SDL_DestroyTexture(m_Texture);
 }
