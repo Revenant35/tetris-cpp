@@ -7,6 +7,7 @@ core_sources = files(
     'src/Layer.cpp',
     'src/Renderer.cpp',
     'src/SpriteLoader.cpp',
+    'src/Timer.cpp',
     'src/Texture.cpp',
     'src/Window.cpp',
 )

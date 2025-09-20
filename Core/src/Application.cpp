@@ -52,6 +52,8 @@ namespace Core {
         float lastTime = GetTime();
         SDL_Event event;
 
+        m_FPSTimer.Start();
+
         while (m_Running) {
             while( SDL_PollEvent( &event ) != 0 ) {
                 if( event.type == SDL_QUIT ) {
@@ -86,10 +88,13 @@ namespace Core {
             }
 
             m_Window->GetRenderer().present();
+
+            m_FrameCount++;
         }
     }
 
     void Application::Stop() {
+        m_FPSTimer.Stop();
         m_LayerStack.clear();
         m_Running = false;
     }
