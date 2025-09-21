@@ -1,9 +1,6 @@
 #include "Core.h"
 
 #include "Renderer.h"
-
-#include <SDL_ttf.h>
-
 #include "Log.h"
 #include "Texture.h"
 
@@ -11,11 +8,13 @@ namespace Core {
     Renderer::Renderer(SDL_Window *window) {
         m_Window = window;
 
-        m_Renderer = SDL_CreateRenderer(m_Window, -1, SDL_RENDERER_ACCELERATED);
+        m_Renderer = SDL_CreateRenderer(m_Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
         if (m_Renderer == nullptr) {
             TETRIS_ERROR("Renderer could not be created! SDL_Error: %s\n", SDL_GetError());
             throw std::runtime_error("Failed to create renderer");
         }
+
+        SDL_SetRenderDrawBlendMode(m_Renderer, SDL_BLENDMODE_BLEND);
     }
 
     Renderer::~Renderer() {
