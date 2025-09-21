@@ -55,7 +55,7 @@ namespace Core {
                            e.IsHandled = true;
                        },
                        [this](WindowMaximizedEvent &e) {
-                           m_IsMinimized = false;
+                           m_IsMinimized = false; // TODO: This isn't accurate
                            e.IsHandled = true;
                        },
                        [this](WindowRestoredEvent &e) {
