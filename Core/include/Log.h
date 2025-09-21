@@ -1,7 +1,7 @@
 #pragma once
 
+#include "Core.h"
 #include <spdlog/logger.h>
-#include <memory>
 
 namespace Core {
     class Log {

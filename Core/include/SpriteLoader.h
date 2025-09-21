@@ -1,8 +1,7 @@
 #pragma once
 
+#include "Core.h"
 #include <SDL_rect.h>
-#include <string>
-#include <unordered_map>
 
 namespace Core {
     struct Size {

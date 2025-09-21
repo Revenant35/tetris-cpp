@@ -1,8 +1,7 @@
 #pragma once
 
-#include <string>
+#include "Core.h"
 #include <SDL.h>
-
 #include "Renderer.h"
 
 namespace Core {

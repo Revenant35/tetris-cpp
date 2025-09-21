@@ -1,6 +1,6 @@
 #pragma once
-#include <unordered_map>
 
+#include "Core.h"
 #include "Font.h"
 
 namespace Core {

@@ -1,9 +1,6 @@
 #pragma once
 
-#include <string>
-#include <memory>
-#include <vector>
-
+#include "Core.h"
 #include "FontRegistry.h"
 #include "Layer.h"
 #include "Timer.h"

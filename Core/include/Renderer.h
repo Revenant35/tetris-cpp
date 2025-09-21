@@ -1,9 +1,8 @@
 #pragma once
 
-#include <string>
+#include "Core.h"
 #include <SDL.h>
 #include <SDL_image.h>
-#include <vector>
 
 #include "SpriteLoader.h"
 #include "Texture.h"

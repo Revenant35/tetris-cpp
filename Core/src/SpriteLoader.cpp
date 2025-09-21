@@ -1,6 +1,6 @@
 #include "SpriteLoader.h"
 
-#include <fstream>
+#include "Core.h"
 #include <SDL_rect.h>
 #include "Serializers.h"
 
