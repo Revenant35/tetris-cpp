@@ -27,6 +27,7 @@ core_lib = static_library(
         dependency('nlohmann_json', method: 'cmake')
     ],
     install : true,
+    c_pch : 'include/pch.h'
 )
 
 core_dep = declare_dependency(
