@@ -4,6 +4,7 @@
 #include "Application.h"
 #include "FontRegistry.h"
 #include "Log.h"
+#include "Events/Event.h"
 
 namespace Core {
     static Application* s_Instance = nullptr;
@@ -50,25 +51,28 @@ namespace Core {
         m_Running = true;
 
         float lastTime = GetTime();
-        SDL_Event event;
+        SDL_Event sdlEvent;
 
         m_FPSTimer.Start();
 
         while (m_Running) {
-            while( SDL_PollEvent( &event ) != 0 ) {
-                if( event.type == SDL_QUIT ) {
+            while( SDL_PollEvent( &sdlEvent ) != 0 ) {
+                if( sdlEvent.type == SDL_QUIT ) {
                     Stop();
                     break;
                 }
 
-                if( event.type == SDL_WINDOWEVENT ) {
-                    m_Window->HandleEvent(event.window);
-                }
-
-                // TODO: Define Custom Events
-                // TODO: Map SDL Events to Custom Events
-                for (int i = static_cast<int>(m_LayerStack.size()) - 1; i >= 0; i--) {
-                    m_LayerStack[i]->OnEvent(event);
+                if (auto event = CreateEventFromSDLEvent(sdlEvent); event.has_value()) {
+                    std::visit(overloaded{
+                                   [this](WindowEvent &e) {
+                                       m_Window->HandleEvent(e);
+                                   },
+                                   [this](InputEvent &e) {
+                                       for (int i = static_cast<int>(m_LayerStack.size()) - 1; i >= 0; i--) {
+                                           m_LayerStack[i]->OnEvent(e);
+                                       }
+                                   }
+                    }, event.value());
                 }
             }
 

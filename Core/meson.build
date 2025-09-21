@@ -1,6 +1,7 @@
 core_inc = include_directories('include')
 
 core_sources = files(
+    'src/Events/Event.cpp',
     'src/Application.cpp',
     'src/Font.cpp',
     'src/FontRegistry.cpp',

@@ -9,11 +9,10 @@ MenuLayer::~MenuLayer() {
 
 }
 
-void MenuLayer::OnEvent(SDL_Event &event) {
+void MenuLayer::OnEvent(Core::InputEvent &event) {
     if (!Game::Get().GetData().IsPaused) {
         return;
     }
-
 }
 
 void MenuLayer::OnUpdate(float deltaTime) {

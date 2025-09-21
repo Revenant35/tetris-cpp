@@ -3,6 +3,7 @@
 #include "Core.h"
 #include <SDL.h>
 #include "Renderer.h"
+#include "Events/WindowEvent.h"
 
 namespace Core {
     struct WindowSpecification {
@@ -22,7 +23,7 @@ namespace Core {
         Window(const WindowSpecification &specification);
         ~Window();
 
-        void HandleEvent(const SDL_WindowEvent &windowEvent);
+        void HandleEvent(WindowEvent &event);
 
         const Renderer& GetRenderer() const { return *m_Renderer; }
         const std::string& GetTitle() const { return m_Title; }

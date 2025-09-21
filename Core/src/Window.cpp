@@ -1,6 +1,8 @@
 #include "Window.h"
 
 #include "Log.h"
+#include "Events/Event.h"
+#include "Events/WindowEvent.h"
 
 namespace Core {
     Window::Window(const WindowSpecification &specification) {
@@ -41,34 +43,42 @@ namespace Core {
         SDL_DestroyWindow(m_Window);
     }
 
-    void Window::HandleEvent(const SDL_WindowEvent &windowEvent) {
-        switch (windowEvent.event) {
-            case SDL_WINDOWEVENT_SIZE_CHANGED:
-                m_Width = static_cast<uint32_t>(windowEvent.data1);
-                m_Height = static_cast<uint32_t>(windowEvent.data2);
-                break;
-            case SDL_WINDOWEVENT_MINIMIZED:
-                m_IsMinimized = true;
-                break;
-            case SDL_WINDOWEVENT_MAXIMIZED:
-                m_IsMinimized = false;
-                break;
-            case SDL_WINDOWEVENT_RESTORED:
-                m_IsMinimized = false;
-                break;
-            case SDL_WINDOWEVENT_ENTER:
-                m_HasMouseFocus = true;
-                break;
-            case SDL_WINDOWEVENT_LEAVE:
-                m_HasMouseFocus = false;
-                break;
-            case SDL_WINDOWEVENT_FOCUS_GAINED:
-                m_HasKeyboardFocus = true;
-                break;
-            case SDL_WINDOWEVENT_FOCUS_LOST:
-                m_HasKeyboardFocus = false;
-                break;
-        }
+    void Window::HandleEvent(WindowEvent &event) {
+        std::visit(overloaded{
+                       [this](WindowResizedEvent &e) {
+                           m_Width = e.Width;
+                           m_Height = e.Height;
+                           e.IsHandled = true;
+                       },
+                       [this](WindowMinimizedEvent &e) {
+                           m_IsMinimized = true;
+                           e.IsHandled = true;
+                       },
+                       [this](WindowMaximizedEvent &e) {
+                           m_IsMinimized = false;
+                           e.IsHandled = true;
+                       },
+                       [this](WindowRestoredEvent &e) {
+                           m_IsMinimized = false;
+                           e.IsHandled = true;
+                       },
+                       [this](WindowFocusedEvent &e) {
+                           m_HasKeyboardFocus = true;
+                           e.IsHandled = true;
+                       },
+                       [this](WindowUnfocusedEvent &e) {
+                           m_HasKeyboardFocus = false;
+                           e.IsHandled = true;
+                       },
+                       [this](WindowEnteredEvent &e) {
+                           m_HasMouseFocus = true;
+                           e.IsHandled = true;
+                       },
+                       [this](WindowExitedEvent &e) {
+                           m_HasMouseFocus = false;
+                           e.IsHandled = true;
+                       }
+                   }, event);
     }
 
     void Window::SetTitle(const std::string &value) {
