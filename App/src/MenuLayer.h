@@ -11,6 +11,8 @@ public:
     void OnUpdate(float deltaTime) override;
     void OnRender() override;
 private:
-    void RenderBackground();
-    void RenderUI();
+    void RenderBackground() const;
+    void RenderUI() const;
+
+    std::weak_ptr<Core::Font> m_Font;
 };

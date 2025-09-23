@@ -12,6 +12,8 @@ namespace Core {
         ~Texture();
 
         SDL_Texture* GetSDLTexture() const { return m_Texture; }
+        int GetWidth() const { return m_Width; }
+        int GetHeight() const { return m_Height; }
     private:
         SDL_Texture* m_Texture = nullptr;
 

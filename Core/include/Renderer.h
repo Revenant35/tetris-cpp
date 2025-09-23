@@ -24,6 +24,8 @@ namespace Core {
 
         void drawText(const Font &font, const std::string &text, const SDL_Color &color, const SDL_Rect &dest) const;
 
+        void drawText(const Font &font, const std::string &text, const SDL_Color &color, const SDL_Point &center, int height) const;
+
         void present() const;
 
         void drawFilledRect(const SDL_Color &color) const;

@@ -44,6 +44,19 @@ namespace Core {
         drawTexture(textTexture, nullptr, &dest);
     }
 
+    void Renderer::drawText(const Font &font, const std::string &text, const SDL_Color &color, const SDL_Point &center, const int height) const {
+        const Texture textTexture(m_Renderer, font.GetTTFFont(), text, color);
+        const float scale = static_cast<float>(height) / textTexture.GetHeight();
+        const SDL_Rect dest {
+            center.x - static_cast<int>(textTexture.GetWidth() * scale) / 2,
+            center.y - static_cast<int>(textTexture.GetHeight() * scale) / 2,
+            static_cast<int>(textTexture.GetWidth() * scale),
+            static_cast<int>(textTexture.GetHeight() * scale)
+        };
+        drawTexture(textTexture, nullptr, &dest);
+
+    }
+
     void Renderer::present() const {
         SDL_RenderPresent(m_Renderer);
     }
