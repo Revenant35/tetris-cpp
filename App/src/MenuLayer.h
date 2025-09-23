@@ -10,4 +10,7 @@ public:
     void OnEvent(Core::InputEvent &event) override;
     void OnUpdate(float deltaTime) override;
     void OnRender() override;
+private:
+    void RenderBackground();
+    void RenderUI();
 };

@@ -48,6 +48,14 @@ namespace Core {
         SDL_RenderPresent(m_Renderer);
     }
 
+    void Renderer::drawFilledRect(const SDL_Color &color) const {
+        SDL_SetRenderDrawColor(m_Renderer, color.r, color.g, color.b, color.a);
+
+        if (SDL_RenderFillRect(m_Renderer, nullptr) != 0) {
+            TETRIS_ERROR("Unable to draw filled rect! SDL Error: %s\n", SDL_GetError());
+        }
+    }
+
     void Renderer::drawFilledRect(const SDL_Rect &rect, const SDL_Color &color) const {
         SDL_SetRenderDrawColor(m_Renderer, color.r, color.g, color.b, color.a);
 

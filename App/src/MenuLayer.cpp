@@ -35,11 +35,17 @@ void MenuLayer::OnRender() {
         return;
     }
 
-    const SDL_Rect transparentBackgroundRect = {
-        0, 0, static_cast<int>(m_Window->GetWidth()), static_cast<int>(m_Window->GetHeight())
-    };
-
-    const SDL_Color transparentColor = {0, 0, 0, 192};
-
-    m_Window->GetRenderer().drawFilledRect(transparentBackgroundRect, transparentColor);
+    RenderBackground();
+    RenderUI();
 }
+
+void MenuLayer::RenderBackground() {
+    constexpr SDL_Color transparentColor = {0, 0, 0, 192};
+
+    m_Window->GetRenderer().drawFilledRect(transparentColor);
+}
+
+void MenuLayer::RenderUI() {
+
+}
+
