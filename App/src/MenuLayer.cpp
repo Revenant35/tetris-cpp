@@ -49,13 +49,20 @@ void MenuLayer::RenderBackground() const {
 
 void MenuLayer::RenderUI() const {
     if (const auto font = m_Font.lock()) {
-        constexpr SDL_Color textColor = {255, 255, 255, 255};
-        constexpr uint32_t textHeight = 50;
+        const auto text = Core::Text {
+            Core::Color {255, 255, 255, 255},
+            "font",
+            "../../App/assets/fonts/font.ttf",
+            "PAUSED",
+            50,
+            Core::HAlign::Center,
+            Core::VAlign::Middle
+        };
+
         const int textOffsetX = m_Window->GetWidth() / 2;
         constexpr int textOffsetY = 100;
         const SDL_Point center {textOffsetX,textOffsetY};
-
-        m_Window->GetRenderer().drawText(*font, "PAUSED", textColor, center, textHeight);
+        m_Window->GetRenderer().drawText(text, center);
     }
 
 }

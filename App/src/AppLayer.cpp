@@ -3,6 +3,7 @@
 #include "Application.h"
 #include "FontRegistry.h"
 #include "Log.h"
+#include "UI/Text.h"
 
 AppLayer::AppLayer(const std::shared_ptr<Core::Window> &window) : Layer(window) {
     TETRIS_INFO("AppLayer created");
@@ -32,8 +33,18 @@ void AppLayer::OnRender() {
             (int)(m_Window->GetHeight() * 0.05),
         };
 
+        const auto text = Core::Text {
+            Core::Color {255, 255, 255, 255},
+            "font",
+            "../../App/assets/fonts/font.ttf",
+            "A TYPE",
+            12,
+            Core::HAlign::Center,
+            Core::VAlign::Middle
+        };
+
         m_Window->GetRenderer().drawFilledRect(playfieldTypeRect, {0, 0, 0, 255});
-        m_Window->GetRenderer().drawText(*font, "A TYPE", {255, 255, 255, 255}, playfieldTypeRect);
+        m_Window->GetRenderer().drawText(text, {100, 100});
 
 
         SDL_Rect linesRect {
@@ -44,7 +55,7 @@ void AppLayer::OnRender() {
         };
 
         m_Window->GetRenderer().drawFilledRect(linesRect, {0, 0, 0, 255});
-        m_Window->GetRenderer().drawText(*font, "LINES - 140", {255, 255, 255, 255}, linesRect);
+        // m_Window->GetRenderer().drawText(*font, "LINES - 140", {255, 255, 255, 255}, linesRect);
 
         // m_Window->GetRenderer().drawText("LINES-" + std::to_string(m_Game.m_LinesCleared), m_FontTexture, m_FontAtlas);
     }

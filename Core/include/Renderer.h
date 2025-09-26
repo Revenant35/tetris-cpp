@@ -6,6 +6,7 @@
 
 #include "SpriteLoader.h"
 #include "Texture.h"
+#include "UI/Text.h"
 
 namespace Core {
     class Renderer {
@@ -22,13 +23,11 @@ namespace Core {
 
         void drawTexture(const Texture& texture, const SDL_Rect *src, const SDL_Rect *dest) const;
 
-        void drawText(const Font &font, const std::string &text, const SDL_Color &color, const SDL_Rect &dest) const;
-
-        void drawText(const Font &font, const std::string &text, const SDL_Color &color, const SDL_Point &center, int height) const;
-
         void present() const;
 
         void drawFilledRect(const SDL_Color &color) const;
+
+        void drawText(const Text &text, const SDL_Point &center) const;
 
         void drawFilledRect(const SDL_Rect &rect, const SDL_Color &color) const;
         bool drawOutlinedRect(const SDL_Rect &rect, const SDL_Color &color) const;

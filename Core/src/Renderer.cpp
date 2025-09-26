@@ -3,6 +3,7 @@
 #include "Renderer.h"
 #include "Log.h"
 #include "Texture.h"
+#include "UI/ColorAdapter.h"
 
 namespace Core {
     Renderer::Renderer(SDL_Window *window) {
@@ -39,24 +40,6 @@ namespace Core {
         SDL_RenderCopy(m_Renderer, texture.GetSDLTexture(), src, dest);
     }
 
-    void Renderer::drawText(const Font &font, const std::string &text, const SDL_Color &color, const SDL_Rect &dest) const {
-        const Texture textTexture(m_Renderer, font.GetTTFFont(), text, color);
-        drawTexture(textTexture, nullptr, &dest);
-    }
-
-    void Renderer::drawText(const Font &font, const std::string &text, const SDL_Color &color, const SDL_Point &center, const int height) const {
-        const Texture textTexture(m_Renderer, font.GetTTFFont(), text, color);
-        const float scale = static_cast<float>(height) / textTexture.GetHeight();
-        const SDL_Rect dest {
-            center.x - static_cast<int>(textTexture.GetWidth() * scale) / 2,
-            center.y - static_cast<int>(textTexture.GetHeight() * scale) / 2,
-            static_cast<int>(textTexture.GetWidth() * scale),
-            static_cast<int>(textTexture.GetHeight() * scale)
-        };
-        drawTexture(textTexture, nullptr, &dest);
-
-    }
-
     void Renderer::present() const {
         SDL_RenderPresent(m_Renderer);
     }
@@ -75,6 +58,47 @@ namespace Core {
         if (SDL_RenderFillRect(m_Renderer, &rect) != 0) {
             TETRIS_ERROR("Unable to draw filled rect! SDL Error: %s\n", SDL_GetError());
         }
+    }
+
+    void Renderer::drawText(const Text &text, const SDL_Point &center) const {
+        const auto font = TTF_OpenFont(text.FontPath.c_str(), text.FontSize);
+        if (font == nullptr) {
+            TETRIS_ERROR("Failed to load font! SDL_ttf Error: %s\n", TTF_GetError());
+            throw std::runtime_error("Failed to load font");
+        }
+
+        const auto surface = TTF_RenderText_Solid(font, text.Content.c_str(), toSDL(text.TextColor));
+
+        if (surface == nullptr) {
+            TTF_CloseFont(font);
+            TETRIS_ERROR("Surface is null!");
+            throw std::runtime_error("Surface is null");
+        }
+
+        const auto texture = SDL_CreateTextureFromSurface(m_Renderer, surface);
+
+        if (texture == nullptr) {
+            TTF_CloseFont(font);
+            SDL_FreeSurface(surface);
+            TETRIS_ERROR("Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
+            throw std::runtime_error("Failed to create texture");
+        }
+
+        const auto width = surface->w;
+        const auto height = surface->h;
+
+        const SDL_Rect rect = {
+            center.x - width / 2,
+            center.y - height / 2,
+            width,
+            height
+        };
+
+        SDL_RenderCopy(m_Renderer, texture, nullptr, &rect);
+
+        TTF_CloseFont(font);
+        SDL_FreeSurface(surface);
+        SDL_DestroyTexture(texture);
     }
 
     bool Renderer::drawOutlinedRect(const SDL_Rect &rect, const SDL_Color &color) const {
