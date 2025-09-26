@@ -14,7 +14,7 @@ void MenuLayer::OnEvent(Core::InputEvent &event) {
     if (auto* keyEvent = std::get_if<Core::KeyEvent>(&event)) {
         // TODO: Holding down the key should not toggle pause multiple times
         if (auto* keyPressedEvent = std::get_if<Core::KeyPressedEvent>(keyEvent)) {
-            if (keyPressedEvent->KeyCode == Core::Key::Escape) {
+            if (keyPressedEvent->KeyCode == Core::Escape) {
                 Game::Get().GetData().IsPaused = !Game::Get().GetData().IsPaused;
                 keyPressedEvent->IsHandled = true;
             }

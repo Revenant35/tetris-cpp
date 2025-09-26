@@ -1,4 +1,5 @@
 #include "Events/EventAdapter.h"
+#include "KeyCodeAdapter.h"
 
 namespace Core {
     std::optional<WindowEvent> CreateWindowEventFromSDLEvent(const SDL_WindowEvent &event) {
@@ -41,14 +42,22 @@ namespace Core {
     std::optional<KeyEvent> CreateKeyEventFromSDLEvent(const SDL_KeyboardEvent &event) {
         switch (event.type) {
             case SDL_KEYDOWN: {
+                const auto keycode = fromSDL(event.keysym.sym);
+                if (!keycode.has_value()) {
+                    return std::nullopt;
+                }
                 return KeyPressedEvent{
-                    .KeyCode=static_cast<KeyCode>(event.keysym.sym),
+                    .KeyCode=keycode.value(),
                     .RepeatCount=event.repeat
                 };
             }
             case SDL_KEYUP: {
+                const auto keycode = fromSDL(event.keysym.sym);
+                if (!keycode.has_value()) {
+                    return std::nullopt;
+                }
                 return KeyReleasedEvent{
-                    .KeyCode=static_cast<KeyCode>(event.keysym.sym)
+                    .KeyCode=keycode.value()
                 };
             }
             default:
