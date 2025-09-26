@@ -3,7 +3,7 @@
 #include <SDL_rect.h>
 
 #include "nlohmann/json.hpp"
-#include "SpriteLoader.h"
+#include "../include/SpriteLoader.h"
 
 inline void to_json(nlohmann::json &json, const SDL_Rect &rect) {
     json = nlohmann::json{
