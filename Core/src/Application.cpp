@@ -4,7 +4,7 @@
 #include "Application.h"
 #include "FontRegistry.h"
 #include "Log.h"
-#include "Events/Event.h"
+#include "Events/EventAdapter.h"
 
 namespace Core {
     static Application* s_Instance = nullptr;

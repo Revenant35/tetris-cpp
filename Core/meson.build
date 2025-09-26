@@ -2,7 +2,7 @@ core_inc = include_directories('include')
 core_private_inc = include_directories('src')
 
 core_sources = files(
-    'src/Events/Event.cpp',
+    'src/Events/EventAdapter.cpp',
     'src/Application.cpp',
     'src/Font.cpp',
     'src/FontRegistry.cpp',

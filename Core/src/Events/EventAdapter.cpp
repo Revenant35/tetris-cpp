@@ -1,5 +1,4 @@
-#include "Events/Event.h"
-
+#include "Events/EventAdapter.h"
 
 namespace Core {
     std::optional<WindowEvent> CreateWindowEventFromSDLEvent(const SDL_WindowEvent &event) {
