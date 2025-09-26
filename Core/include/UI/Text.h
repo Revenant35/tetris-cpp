@@ -10,23 +10,30 @@ namespace Core {
 
     class Text {
     public:
-        friend class Renderer;
-        explicit Text(
-            const Color &color,
-            const std::string &fontFamily,
-            const std::string &fontPath,
-            const std::string& content,
-            int fontSize,
-            HAlign horizontalAlignment = HAlign::Left,
-            VAlign verticalAlignment = VAlign::Top
-        );
-
-        const Color& TextColor;
-        const std::string& FontFamily;
-        const std::string& FontPath;
-        const std::string& Content;
+        const Color TextColor;
+        const std::string FontFamily;
+        const std::string FontPath;
+        const std::string Content;
         const int FontSize;
         const HAlign HorizontalAlignment;
         const VAlign VerticalAlignment;
+
+        constexpr Text(
+            const Color &color,
+            const std::string &fontFamily,
+            const std::string &fontPath,
+            const std::string &content,
+            const int fontSize,
+            const HAlign horizontalAlignment = HAlign::Left,
+            const VAlign verticalAlignment = VAlign::Top
+        ) noexcept
+            : TextColor(color),
+              FontFamily(fontFamily),
+              FontPath(fontPath),
+              Content(content),
+              FontSize(fontSize),
+              HorizontalAlignment(horizontalAlignment),
+              VerticalAlignment(verticalAlignment) {
+        }
     };
 }

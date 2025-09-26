@@ -4,7 +4,6 @@ core_private_inc = include_directories('src')
 core_sources = files(
     'src/Events/EventAdapter.cpp',
     'src/UI/Color.cpp',
-    'src/UI/Text.cpp',
     'src/Application.cpp',
     'src/Font.cpp',
     'src/FontRegistry.cpp',
