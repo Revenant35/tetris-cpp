@@ -6,6 +6,7 @@
 
 #include "SpriteLoader.h"
 #include "Texture.h"
+#include "UI/Button.h"
 #include "UI/Text.h"
 
 namespace Core {
@@ -28,6 +29,7 @@ namespace Core {
         void drawFilledRect(const SDL_Color &color) const;
 
         void drawText(const Text &text, const SDL_Point &center) const;
+        void drawButton(const Button &button, const SDL_Point &center) const;
 
         void drawFilledRect(const SDL_Rect &rect, const SDL_Color &color) const;
         bool drawOutlinedRect(const SDL_Rect &rect, const SDL_Color &color) const;

@@ -120,6 +120,48 @@ namespace Core {
         SDL_DestroyTexture(texture);
     }
 
+    void Renderer::drawButton(const Button &button, const SDL_Point &center) const {
+        const auto font = TTF_OpenFont(button.FontPath.c_str(), button.FontSize);
+        if (font == nullptr) {
+            TETRIS_ERROR("Failed to load font! SDL_ttf Error: %s\n", TTF_GetError());
+            throw std::runtime_error("Failed to load font");
+        }
+
+        const auto surface = TTF_RenderText_Solid(font, button.Content.c_str(), toSDL(button.TextColor));
+
+        if (surface == nullptr) {
+            TTF_CloseFont(font);
+            TETRIS_ERROR("Surface is null!");
+            throw std::runtime_error("Surface is null");
+        }
+
+        const auto texture = SDL_CreateTextureFromSurface(m_Renderer, surface);
+
+        if (texture == nullptr) {
+            TTF_CloseFont(font);
+            SDL_FreeSurface(surface);
+            TETRIS_ERROR("Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
+            throw std::runtime_error("Failed to create texture");
+        }
+
+        const auto textWidth = std::max(button.Width, surface->w);
+        const auto textHeight = std::max(button.Height, surface->h);
+        const auto backgroundWidth = textWidth + button.PaddingLeft + button.PaddingRight;
+        const auto backgroundHeight = textHeight + button.PaddingTop + button.PaddingBottom;
+
+        const SDL_Rect textRect = {center.x - textWidth / 2, center.y - textHeight / 2, textWidth, textHeight};
+        const SDL_Rect backgroundRect = {center.x - backgroundWidth / 2, center.y - backgroundHeight / 2, backgroundWidth, backgroundHeight};
+
+        SDL_SetRenderDrawColor(m_Renderer, button.BackgroundColor.r, button.BackgroundColor.g, button.BackgroundColor.b, button.BackgroundColor.a);
+        SDL_RenderFillRect(m_Renderer, &backgroundRect);
+
+        SDL_RenderCopy(m_Renderer, texture, nullptr, &textRect);
+
+        TTF_CloseFont(font);
+        SDL_FreeSurface(surface);
+        SDL_DestroyTexture(texture);
+    }
+
     bool Renderer::drawOutlinedRect(const SDL_Rect &rect, const SDL_Color &color) const {
         SDL_SetRenderDrawColor(m_Renderer, color.r, color.g, color.b, color.a);
         SDL_Point points[5];

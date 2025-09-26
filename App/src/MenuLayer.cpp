@@ -61,5 +61,18 @@ void MenuLayer::RenderUI() const {
     constexpr int textOffsetY = 100;
     const SDL_Point center {textOffsetX,textOffsetY};
     m_Window->GetRenderer().drawText(text, center);
+
+    Core::Button button {
+        Core::Color::White,
+        Core::Color {64, 64, 64, 255},
+        "font",
+        "../../App/assets/fonts/font.ttf",
+        "PRESS ESC TO RESUME",
+        24,
+        300,
+        50
+    };
+
+    m_Window->GetRenderer().drawButton(button, {textOffsetX, textOffsetY + 100} );
 }
 
