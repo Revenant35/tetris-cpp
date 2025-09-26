@@ -34,7 +34,7 @@ void AppLayer::OnRender() {
         };
 
         const auto text = Core::Text {
-            Core::Color {255, 255, 255, 255},
+            Core::Color::White,
             "font",
             "../../App/assets/fonts/font.ttf",
             "A TYPE",

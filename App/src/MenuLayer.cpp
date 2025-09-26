@@ -50,7 +50,7 @@ void MenuLayer::RenderBackground() const {
 void MenuLayer::RenderUI() const {
     if (const auto font = m_Font.lock()) {
         const auto text = Core::Text {
-            Core::Color {255, 255, 255, 255},
+            Core::Color::White,
             "font",
             "../../App/assets/fonts/font.ttf",
             "PAUSED",
