@@ -3,18 +3,19 @@ core_private_inc = include_directories('src')
 
 core_sources = files(
     'src/Events/EventAdapter.cpp',
-    'src/Application.cpp',
+    'src/UI/Color.cpp',
     'src/UI/Text.cpp',
+    'src/Application.cpp',
     'src/Font.cpp',
     'src/FontRegistry.cpp',
     'src/KeyCodeAdapter.cpp',
-    'src/MouseCodeAdapter.cpp',
-    'src/Log.cpp',
     'src/Layer.cpp',
+    'src/Log.cpp',
+    'src/MouseCodeAdapter.cpp',
     'src/Renderer.cpp',
     'src/SpriteLoader.cpp',
-    'src/Timer.cpp',
     'src/Texture.cpp',
+    'src/Timer.cpp',
     'src/Window.cpp',
 )
 

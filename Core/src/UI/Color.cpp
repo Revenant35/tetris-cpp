@@ -19,14 +19,14 @@ namespace Core {
     }
 
     constexpr Color Color::withAlpha(const uint8_t alpha) const noexcept {
-        return Color(r, g, b, alpha);
+        return Color{r, g, b, alpha};
     }
 
     constexpr Color Color::FromRGB(const uint32_t rgb) noexcept {
         const uint8_t r = rgb >> 16 & 0xFF;
         const uint8_t g = rgb >> 8 & 0xFF;
         const uint8_t b = rgb & 0xFF;
-        return Color(r, g, b);
+        return Color{r, g, b};
     }
 
     constexpr Color Color::FromRGBA(const uint32_t rgba) noexcept {
@@ -34,7 +34,7 @@ namespace Core {
         const uint8_t g = rgba >> 16 & 0xFF;
         const uint8_t b = rgba >> 8 & 0xFF;
         const uint8_t a = rgba & 0xFF;
-        return Color(r, g, b, a);
+        return Color{r, g, b, a};
     }
 
     constexpr bool Color::operator==(const Color &other) const noexcept {
