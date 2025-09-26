@@ -12,26 +12,14 @@ namespace Core {
     const Color Color::Transparent = {0, 0, 0, 0};
 
     constexpr Color::Color(const uint8_t red, const uint8_t green, const uint8_t blue, const uint8_t alpha) noexcept
-        : m_Red(red),
-          m_Green(green),
-          m_Blue(blue),
-          m_Alpha(alpha) {
+        : r(red),
+          g(green),
+          b(blue),
+          a(alpha) {
     }
 
-    constexpr Color::Color(const SDL_Color &color) noexcept : Color(color.r, color.g, color.b, color.a) {
-    }
-
-    constexpr SDL_Color Color::ToSDL() const noexcept {
-        return SDL_Color{
-            m_Red,
-            m_Green,
-            m_Blue,
-            m_Alpha
-        };
-    }
-
-    constexpr Color Color::withAlpha(const uint8_t a) const noexcept {
-        return Color(m_Red, m_Green, m_Blue, a);
+    constexpr Color Color::withAlpha(const uint8_t alpha) const noexcept {
+        return Color(r, g, b, alpha);
     }
 
     constexpr Color Color::FromRGB(const uint32_t rgb) noexcept {
@@ -50,10 +38,10 @@ namespace Core {
     }
 
     constexpr bool Color::operator==(const Color &other) const noexcept {
-        return m_Red == other.m_Red && m_Green == other.m_Green && m_Blue == other.m_Blue && m_Alpha == other.m_Alpha;
+        return r == other.r && g == other.g && b == other.b && a == other.a;
     }
 
     constexpr bool Color::operator!=(const Color &other) const noexcept {
-        return m_Red != other.m_Red || m_Green != other.m_Green || m_Blue != other.m_Blue || m_Alpha != other.m_Alpha;
+        return r != other.r || g != other.g || b != other.b || a != other.a;
     }
 }

@@ -1,7 +1,5 @@
 #pragma once
 
-#include <SDL_pixels.h>
-
 #include "Core.h"
 
 namespace Core {
@@ -24,6 +22,8 @@ namespace Core {
         static const Color Cyan;
         static const Color Transparent;
 
+        const uint8_t r, g, b, a;
+
         /**
          * @brief Constructs a color with the specified RGBA components
          * @param red Red component (0-255)
@@ -34,23 +34,11 @@ namespace Core {
         constexpr Color(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha = 255) noexcept;
 
         /**
-         * @brief Constructs a color from an SDL_Color structure
-         * @param color The SDL_Color to convert from
-         */
-        explicit constexpr Color(const SDL_Color &color) noexcept;
-
-        /**
-         * @brief Converts this color to an SDL_Color structure
-         * @return The equivalent SDL_Color representation
-         */
-        [[nodiscard]] constexpr SDL_Color ToSDL() const noexcept;
-
-        /**
          * @brief Creates a new color with the specified alpha value
-         * @param a The new alpha component (0-255)
+         * @param alpha The new alpha component (0-255)
          * @return A new Color with the same RGB values but the specified alpha
          */
-        [[nodiscard]] constexpr Color withAlpha(uint8_t a) const noexcept;
+        [[nodiscard]] constexpr Color withAlpha(uint8_t alpha) const noexcept;
 
         /**
          * @brief Creates a color from a 24-bit RGB integer value
@@ -79,8 +67,5 @@ namespace Core {
          * @return true if colors have different RGBA values, false otherwise
          */
         constexpr bool operator!=(const Color &other) const noexcept;
-
-    private:
-        uint8_t m_Red, m_Green, m_Blue, m_Alpha;
     };
 }
