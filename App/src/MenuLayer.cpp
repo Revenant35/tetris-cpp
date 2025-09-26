@@ -4,7 +4,6 @@
 #include "Game.h"
 
 MenuLayer::MenuLayer(const std::shared_ptr<Core::Window> &window) : Layer(window) {
-    m_Font = Core::Application::Get().GetFontRegistry().Find("font");
 }
 
 MenuLayer::~MenuLayer() {
@@ -48,22 +47,19 @@ void MenuLayer::RenderBackground() const {
 }
 
 void MenuLayer::RenderUI() const {
-    if (const auto font = m_Font.lock()) {
-        const auto text = Core::Text {
-            Core::Color::White,
-            "font",
-            "../../App/assets/fonts/font.ttf",
-            "PAUSED",
-            50,
-            Core::HAlign::Center,
-            Core::VAlign::Middle
-        };
+    const auto text = Core::Text {
+        Core::Color::White,
+        "font",
+        "../../App/assets/fonts/font.ttf",
+        "PAUSED",
+        50,
+        Core::HAlign::Center,
+        Core::VAlign::Middle
+    };
 
-        const int textOffsetX = m_Window->GetWidth() / 2;
-        constexpr int textOffsetY = 100;
-        const SDL_Point center {textOffsetX,textOffsetY};
-        m_Window->GetRenderer().drawText(text, center);
-    }
-
+    const int textOffsetX = m_Window->GetWidth() / 2;
+    constexpr int textOffsetY = 100;
+    const SDL_Point center {textOffsetX,textOffsetY};
+    m_Window->GetRenderer().drawText(text, center);
 }
 

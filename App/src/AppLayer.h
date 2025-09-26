@@ -8,6 +8,17 @@ public:
 
     void OnUpdate(float deltaTime) override;
     void OnRender() override;
+
+    void RenderPlayfieldType() const;
+
+    void RenderLinesCleared() const;
+
+    void RenderPieceStatistics() const;
+
+    void RenderNextPiece() const;
+
+    void RenderLevelInfo() const;
+
 private:
     Core::SpriteAtlas* m_BlockAtlas;
     Core::SpriteAtlas* m_PlayfieldAtlas;

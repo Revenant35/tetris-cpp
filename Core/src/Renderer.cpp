@@ -87,12 +87,31 @@ namespace Core {
         const auto width = surface->w;
         const auto height = surface->h;
 
-        const SDL_Rect rect = {
-            center.x - width / 2,
-            center.y - height / 2,
-            width,
-            height
-        };
+        int x = 0, y = 0;
+        switch (text.HorizontalAlignment) {
+            case HAlign::Left:
+                x = center.x;
+                break;
+            case HAlign::Center:
+                x = center.x - width / 2;
+                break;
+            case HAlign::Right:
+                x = center.x - width;
+                break;
+        }
+        switch (text.VerticalAlignment) {
+            case VAlign::Top:
+                y = center.y;
+                break;
+            case VAlign::Middle:
+                y = center.y - height / 2;
+                break;
+            case VAlign::Bottom:
+                y = center.y - height;
+                break;
+        }
+
+        const SDL_Rect rect = {x, y, width, height};
 
         SDL_RenderCopy(m_Renderer, texture, nullptr, &rect);
 

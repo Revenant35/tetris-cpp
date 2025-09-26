@@ -26,39 +26,129 @@ void AppLayer::OnRender() {
     if (const auto font = m_Font.lock()) {
         m_Window->GetRenderer().drawTexture(*m_PlayfieldTexture, &m_PlayfieldAtlas->sprites.at("A_TYPE"), nullptr);
 
-        SDL_Rect playfieldTypeRect {
-            (int)(m_Window->GetWidth() * 0.09),
-            (int)(m_Window->GetHeight() * 0.1),
-            (int)(m_Window->GetWidth() * 0.195),
-            (int)(m_Window->GetHeight() * 0.05),
-        };
-
-        const auto text = Core::Text {
-            Core::Color::White,
-            "font",
-            "../../App/assets/fonts/font.ttf",
-            "A TYPE",
-            12,
-            Core::HAlign::Center,
-            Core::VAlign::Middle
-        };
-
-        m_Window->GetRenderer().drawFilledRect(playfieldTypeRect, {0, 0, 0, 255});
-        m_Window->GetRenderer().drawText(text, {100, 100});
-
-
-        SDL_Rect linesRect {
-            (int)(m_Window->GetWidth() * 0.37),
-            (int)(m_Window->GetHeight() * 0.065),
-            (int)(m_Window->GetWidth() * 0.325),
-            (int)(m_Window->GetHeight() * 0.05),
-        };
-
-        m_Window->GetRenderer().drawFilledRect(linesRect, {0, 0, 0, 255});
-        // m_Window->GetRenderer().drawText(*font, "LINES - 140", {255, 255, 255, 255}, linesRect);
-
-        // m_Window->GetRenderer().drawText("LINES-" + std::to_string(m_Game.m_LinesCleared), m_FontTexture, m_FontAtlas);
+        RenderPlayfieldType();
+        RenderLinesCleared();
+        RenderPieceStatistics();
+        RenderNextPiece();
+        RenderLevelInfo();
     }
+}
+
+void AppLayer::RenderPlayfieldType() const {
+    const auto text = Core::Text {
+        Core::Color::White,
+        "font",
+        "../../App/assets/fonts/font.ttf",
+        "B TYPE",
+        24,
+        Core::HAlign::Center,
+        Core::VAlign::Middle
+    };
+
+    const auto center = SDL_Point {
+        static_cast<int>(m_Window->GetWidth() * 0.1875),
+        static_cast<int>(m_Window->GetHeight() * 0.125),
+    };
+
+    m_Window->GetRenderer().drawText(text, center);
+}
+
+void AppLayer::RenderLinesCleared() const {
+    const auto text = Core::Text {
+        Core::Color::White,
+        "font",
+        "../../App/assets/fonts/font.ttf",
+        "LINES - 14000",
+        20,
+        Core::HAlign::Center,
+        Core::VAlign::Middle
+    };
+
+    const auto center = SDL_Point {
+        static_cast<int>(m_Window->GetWidth() * 0.5325),
+        static_cast<int>(m_Window->GetHeight() * 0.09),
+    };
+
+    m_Window->GetRenderer().drawText(text, center);
+}
+
+void AppLayer::RenderPieceStatistics() const {
+    const auto text = Core::Text {
+        Core::Color::White,
+        "font",
+        "../../App/assets/fonts/font.ttf",
+        "STATISTICS",
+        18,
+        Core::HAlign::Center,
+        Core::VAlign::Middle
+    };
+
+    const auto center = SDL_Point {
+        static_cast<int>(m_Window->GetWidth() * 0.1875),
+        static_cast<int>(m_Window->GetHeight() * 0.3125),
+    };
+
+    m_Window->GetRenderer().drawText(text, center);
+
+    // TODO: Render actual piece statistics below the "STATISTICS" text
+}
+
+void AppLayer::RenderNextPiece() const {
+    const auto text = Core::Text {
+        Core::Color::White,
+        "font",
+        "../../App/assets/fonts/font.ttf",
+        "NEXT",
+        24,
+        Core::HAlign::Center,
+        Core::VAlign::Middle
+    };
+
+    const auto center = SDL_Point {
+        static_cast<int>(m_Window->GetWidth() * 0.8125),
+        static_cast<int>(m_Window->GetHeight() * 0.45),
+    };
+
+    m_Window->GetRenderer().drawText(text, center);
+
+    // TODO: Render next piece sprite
+}
+
+void AppLayer::RenderLevelInfo() const {
+    const auto levelText = Core::Text {
+        Core::Color::White,
+        "font",
+        "../../App/assets/fonts/font.ttf",
+        "LEVEL",
+        24,
+        Core::HAlign::Center,
+        Core::VAlign::Middle
+    };
+
+    const auto levelCenter = SDL_Point {
+        static_cast<int>(m_Window->GetWidth() * 0.83),
+        static_cast<int>(m_Window->GetHeight() * 0.695),
+    };
+
+    m_Window->GetRenderer().drawText(levelText, levelCenter);
+
+
+    const auto numberText = Core::Text {
+        Core::Color::White,
+        "font",
+        "../../App/assets/fonts/font.ttf",
+        "01",
+        24,
+        Core::HAlign::Center,
+        Core::VAlign::Middle
+    };
+
+    const auto numberCenter = SDL_Point {
+        static_cast<int>(m_Window->GetWidth() * 0.83),
+        static_cast<int>(m_Window->GetHeight() * 0.735),
+    };
+
+    m_Window->GetRenderer().drawText(numberText, numberCenter);
 }
 
 void AppLayer::OnUpdate(const float deltaTime) {

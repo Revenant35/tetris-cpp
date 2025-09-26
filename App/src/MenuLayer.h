@@ -13,6 +13,4 @@ public:
 private:
     void RenderBackground() const;
     void RenderUI() const;
-
-    std::weak_ptr<Core::Font> m_Font;
 };
