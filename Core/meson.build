@@ -1,4 +1,5 @@
 core_inc = include_directories('include')
+core_private_inc = include_directories('src')
 
 core_sources = files(
     'src/Events/Event.cpp',
@@ -17,7 +18,7 @@ core_sources = files(
 core_lib = static_library(
     'core',
     sources: core_sources,
-    include_directories : core_inc,
+    include_directories : [core_inc, core_private_inc],
     dependencies : [
         dependency('fmt', fallback : ['fmt', 'fmt_dep']),
         dependency('spdlog', fallback : ['spdlog', 'spdlog_dep'], default_options: ['std_format=disabled']),
