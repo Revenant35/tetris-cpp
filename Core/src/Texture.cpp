@@ -1,7 +1,7 @@
-#include <SDL_ttf.h>
 #include "Texture.h"
 #include "Log.h"
-#include "SDL_image.h"
+#include <SDL_image.h>
+#include <SDL_ttf.h>
 
 Core::Texture::Texture(SDL_Renderer *renderer, const std::string &path) {
     SDL_Surface *loadedSurface = IMG_Load(path.c_str());

@@ -1,7 +1,8 @@
 #pragma once
 
 #include "Core.h"
-#include <SDL_ttf.h>
+
+struct TTF_Font;
 
 namespace Core {
     class Font {

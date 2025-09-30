@@ -1,15 +1,14 @@
-#include "Core.h"
-
 #include "Renderer.h"
+#include "Core.h"
 #include "Log.h"
+#include "Window.h"
 #include "Texture.h"
 #include "UI/ColorAdapter.h"
+#include <SDL_ttf.h>
 
 namespace Core {
-    Renderer::Renderer(SDL_Window *window) {
-        m_Window = window;
-
-        m_Renderer = SDL_CreateRenderer(m_Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    Renderer::Renderer(const Window &window) {
+        m_Renderer = SDL_CreateRenderer(window.getSDLWindow(), -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
         if (m_Renderer == nullptr) {
             TETRIS_ERROR("Renderer could not be created! SDL_Error: %s\n", SDL_GetError());
             throw std::runtime_error("Failed to create renderer");
@@ -22,11 +21,26 @@ namespace Core {
         SDL_DestroyRenderer(m_Renderer);
     }
 
+    Renderer::Renderer(Renderer &&other) noexcept {
+        m_Renderer = other.m_Renderer;
+        other.m_Renderer = nullptr;
+    }
+
+    Renderer & Renderer::operator=(Renderer &&other) noexcept {
+        if (this != &other) {
+            SDL_DestroyRenderer(m_Renderer);
+            m_Renderer = other.m_Renderer;
+            other.m_Renderer = nullptr;
+        }
+
+        return *this;
+    }
+
     std::unique_ptr<Texture> Renderer::loadTexture(const std::string &path) const {
         return std::make_unique<Texture>(m_Renderer, path);
     }
 
-    void Renderer::clear(const SDL_Color &color) const {
+    void Renderer::clear(const Color &color) const {
         if (SDL_SetRenderDrawColor(m_Renderer, color.r, color.g, color.b, color.a) != 0) {
             TETRIS_ERROR(SDL_GetError());
         }
@@ -44,7 +58,7 @@ namespace Core {
         SDL_RenderPresent(m_Renderer);
     }
 
-    void Renderer::drawFilledRect(const SDL_Color &color) const {
+    void Renderer::drawFilledRect(const Color &color) const {
         SDL_SetRenderDrawColor(m_Renderer, color.r, color.g, color.b, color.a);
 
         if (SDL_RenderFillRect(m_Renderer, nullptr) != 0) {
@@ -52,7 +66,7 @@ namespace Core {
         }
     }
 
-    void Renderer::drawFilledRect(const SDL_Rect &rect, const SDL_Color &color) const {
+    void Renderer::drawFilledRect(const SDL_Rect &rect, const Color &color) const {
         SDL_SetRenderDrawColor(m_Renderer, color.r, color.g, color.b, color.a);
 
         if (SDL_RenderFillRect(m_Renderer, &rect) != 0) {
@@ -162,8 +176,9 @@ namespace Core {
         SDL_DestroyTexture(texture);
     }
 
-    bool Renderer::drawOutlinedRect(const SDL_Rect &rect, const SDL_Color &color) const {
+    bool Renderer::drawOutlinedRect(const SDL_Rect &rect, const Color &color) const {
         SDL_SetRenderDrawColor(m_Renderer, color.r, color.g, color.b, color.a);
+
         SDL_Point points[5];
         points[0] = {rect.x, rect.y};
         points[1] = {rect.x + rect.w, rect.y};
@@ -180,7 +195,7 @@ namespace Core {
         return true;
     }
 
-    bool Renderer::drawPoints(const SDL_Point* points, const int count, const SDL_Color &color) const {
+    bool Renderer::drawPoints(const SDL_Point* points, const int count, const Color &color) const {
         SDL_SetRenderDrawColor(m_Renderer, color.r, color.g, color.b, color.a);
 
         for (int i = 0; i < count; ++i) {

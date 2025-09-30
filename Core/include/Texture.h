@@ -1,8 +1,11 @@
 #pragma once
 
 #include "Core.h"
-#include <SDL_render.h>
-#include "Font.h"
+
+struct SDL_Texture;
+struct SDL_Renderer;
+struct TTF_Font;
+struct SDL_Color;
 
 namespace Core {
     class Texture {
